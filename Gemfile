@@ -7,6 +7,8 @@ gem 'rake'
 gem 'rails', '4.0.2'
 gem 'foreman'
 
+gem 'crypto_trader', :git => 'git@github.com:boymaas/crypto_trader.git', :branch => :master
+
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 
@@ -37,6 +39,8 @@ group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
 end
+
+
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
