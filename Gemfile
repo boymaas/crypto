@@ -48,4 +48,9 @@ end
 # gem 'capistrano', group: :development
 
 # Use debugger
+group :development, :test do
+  gem 'rspec-rails'
+  gem 'debugger'
+  gem 'pry'
+end
 # gem 'debugger', group: [:development, :test]
