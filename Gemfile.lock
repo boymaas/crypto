@@ -122,6 +122,7 @@ DEPENDENCIES
   jquery-rails
   mina
   rails (= 4.0.2)
+  rake
   sass-rails (~> 4.0.0)
   sdoc
   sqlite3
