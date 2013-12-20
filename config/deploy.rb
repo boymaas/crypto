@@ -24,6 +24,9 @@ set :shared_paths, ['config/database.yml', 'log']
 set :user, 'crypto'    # Username in the server to SSH to.
 #   set :port, '30000'     # SSH port number.
 
+set :foreman_app, :crypto
+set :foreman_user, :crypto
+
 # This task is the environment that is loaded for most commands, such as
 # `mina deploy` or `mina rake`.
 task :environment do
@@ -57,13 +60,23 @@ task :deploy => :environment do
     invoke :'git:clone'
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
+    invoke :'check_rbenv'
     invoke :'rails:db_migrate'
     invoke :'rails:assets_precompile'
 
     to :launch do
+      invoke 'foreman:export'
       invoke 'foreman:restart'
     end
   end
+end
+
+task :check_rbenv => :environment do
+    queue  %{
+      echo "-----> checking rbenv"
+      #{echo_cmd %{echo $PWD}}
+      #{echo_cmd %{rbenv local}}
+    }
 end
 
 # For help in making your deploy script, see the Mina documentation:

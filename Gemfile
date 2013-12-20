@@ -1,8 +1,11 @@
 source 'https://rubygems.org'
 
+gem 'bundler'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rake'
 gem 'rails', '4.0.2'
+gem 'foreman'
 
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
