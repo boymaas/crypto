@@ -27,6 +27,12 @@ set :user, 'crypto'    # Username in the server to SSH to.
 
 set :foreman_app, :crypto
 set :foreman_user, :crypto
+set :foreman_concurrency, { 
+  :web => 1,
+  :data_collector => 1,
+  :bot_runner => 1,
+  :vacuum => 1 
+}
 
 # This task is the environment that is loaded for most commands, such as
 # `mina deploy` or `mina rake`.

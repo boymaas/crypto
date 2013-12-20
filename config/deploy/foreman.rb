@@ -41,11 +41,18 @@ set_default :foreman_app,  lambda { application }
 set_default :foreman_user, lambda { user }
 set_default :foreman_log,  lambda { "#{deploy_to!}/#{shared_path}/log" }
 set_default :foreman_port, lambda { 6000 }
+set_default :foreman_concurrency, lambda { Hash.new }
 
 namespace :foreman do
   desc 'Export the Procfile to Ubuntu upstart scripts'
   task :export do
-    export_cmd = "rbenv sudo bundle exec foreman export upstart /etc/init -a #{foreman_app} -u #{foreman_user} -l #{foreman_log} -p #{foreman_port}"
+    concurrency = if not foreman_concurrency.keys.empty?
+                    "-c " + foreman_concurrency.map {|k,v| "#{k}=#{v}" } * ","
+                  else
+                    ""
+                  end
+
+    export_cmd = "rbenv sudo bundle exec foreman export upstart /etc/init -a #{foreman_app} -u #{foreman_user} -l #{foreman_log} -p #{foreman_port} #{concurrency}"
 
     queue %{
       echo "-----> Exporting foreman procfile for #{foreman_app}"
