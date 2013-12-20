@@ -1,0 +1,3 @@
+bundle update --source crypto_trader
+git aa Gemfile.lock
+git ci -m 'crypto-trader gem update'
