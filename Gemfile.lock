@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:boymaas/crypto_trader.git
-  revision: 8d093ebe4a95ae48f8f7f57c36dbb5f8f28fb1a3
+  revision: 6c5d638cc915b43011bf5d499c72a3d97bb4cd37
   branch: master
   specs:
     crypto_trader (0.0.1)
