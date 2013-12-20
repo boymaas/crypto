@@ -1,9 +1,10 @@
 require 'mina/bundler'
 require 'mina/rails'
 require 'mina/git'
-require 'mina/foreman'
 require 'mina/rbenv'  # for rbenv support. (http://rbenv.org)
 # require 'mina/rvm'    # for rvm support. (http://rvm.io)
+
+require_relative 'deploy/foreman'
 
 # Basic settings:
 #   domain       - The hostname to SSH to.
