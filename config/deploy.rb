@@ -60,6 +60,7 @@ task :deploy => :environment do
     # instance of your project.
     invoke :'git:clone'
     invoke :'deploy:link_shared_paths'
+    invoke :'link_extra_shared_paths'
     invoke :'bundle:install'
     invoke :'check_rbenv'
     invoke :'rails:db_migrate'
@@ -70,6 +71,13 @@ task :deploy => :environment do
       invoke 'foreman:restart'
     end
   end
+end
+
+task :link_extra_shared_paths => :environment do
+    queue  %{
+      echo "-----> linking extra shared paths"
+      #{echo_cmd(%{ln -s "#{deploy_to}/#{shared_path}/config/env" "./.env"})}
+    }
 end
 
 task :check_rbenv => :environment do
