@@ -17,3 +17,6 @@ cd /vagrant
 
 # Postgresql
 . provision/postgresql.sh
+
+# Configure our crypto user
+. provision/crypto-trader-setup.sh
