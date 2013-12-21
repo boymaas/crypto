@@ -1,0 +1,2 @@
+RAILS_ENV=production
+CRYPTO_TRADER_DATABASE_URL=postgres://crypto_trader:crypto_trader@localhost/crypto_trader

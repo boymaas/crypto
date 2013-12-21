@@ -12,7 +12,9 @@ function add_user_with_password() {
 add_user_with_password 'crypto' 'gekko' 
 
 echo "Generate ssh keys"
-sudo -u crypto -i ssh-keygen -t rsa -N "geed is good" -f ~/.ssh/id_rsa
+sudo -u crypto -i <<EOS
+ssh-keygen -t rsa -N "geed is good" -f ~/.ssh/id_rsa
+EOS
 
 # echo "Enabling crypto user ssh"
 # echo 'crypto  ALL=(ALL:ALL) NOPASSWD: ALL' >> /etc/sudoers
@@ -21,3 +23,8 @@ echo "Adding githubs key to known hosts, for easy deployment"
 sudo -u crypto -i <<EOS
   ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 EOS
+
+echo "Adding environment file for app"
+cp provision/crypto-environment ~crypto/environment
+chown crypto.crypto ~crypto/environment
+
