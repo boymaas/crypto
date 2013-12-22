@@ -1,6 +1,4 @@
-. user-setup.sh
-. user-homedir.sh
-
-user_setup 'crypto'
+user_setup 'vagrant'
+user_homedir_all 'vagrant'
 
 

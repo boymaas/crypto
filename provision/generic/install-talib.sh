@@ -1,7 +1,5 @@
-ARCHFLAGS="-arch i386" 
 
 function install_talib() {
-  
 (
   cd vendor/
   tar xzf ta-lib.tgz
@@ -11,6 +9,7 @@ function install_talib() {
   make install
 )
 
+  ARCHFLAGS="-arch i386" 
   sudo -u vagrant -i <<EOF
     gem install talib_ruby -- \
       --with-talib-include=/usr/local/include/ta-lib/ \
@@ -18,5 +17,4 @@ function install_talib() {
 EOF
 }
 
-install_talib
-
+export -f install_talib

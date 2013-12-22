@@ -1,18 +1,26 @@
+#!/bin/bash
+
 cd /vagrant
 
-# Setup config variables
-. provision/config.sh
+# Generic provision scripts
+. provision/generic/environment.sh
+. provision/generic/install-talib.sh
+. provision/generic/postgresql.sh
+. provision/generic/user-homedir.sh
+. provision/generic/user-setup.sh
 
-# Setup environment and define provisioning helpers
-. provision/environment.sh
+# Always start with setting up environment
+environment_setup
 
-# # Install bitcoind
-# . provision/bitcoind.sh
+# Install needed libs
+install libsqlite3-dev
+install libpq-dev
+install_talib
 
-# Postgresql
-. provision/postgresql.sh
+# Install database
+postgresql_install
 
-# Configure our crypto user
+# Provision the different user accounts
 . provision/user-vagrant.sh
-. provision/user-crypto.sh
 . provision/user-crypto-trader.sh
+. provision/user-crypto.sh

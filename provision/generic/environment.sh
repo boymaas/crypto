@@ -1,11 +1,6 @@
 install() {
   apt-get install -y -qq $*
 }
-export -f install
-
-apt-get update
-install vim htop whois git make
-install python-software-properties
 
 # build requirements for bitcoind
 install_build_essentials() {
@@ -15,4 +10,14 @@ install_build_essentials() {
           libboost-all-dev \
           pkg-config 
 }
-export -f install_build_essentials
+
+environment_setup() {
+  apt-get update
+  install vim htop whois git make
+  install python-software-properties
+
+  install_build_essentials
+}
+
+export -f install
+export -f environment_setup

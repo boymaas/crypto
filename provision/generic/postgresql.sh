@@ -2,6 +2,7 @@
 
 # using https://github.com/rkiel/vagrant-starter/tree/master/provision
 
+postgresql_install() {
 echo "Begin PostgreSQL"
 
 echo "Installing Postgres 9.1"
@@ -24,3 +25,6 @@ echo "Restarting"
 service postgresql restart
 
 echo "End PostgreSQL"
+}
+
+export -f postgresql_install
