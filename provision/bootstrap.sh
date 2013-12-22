@@ -10,15 +10,15 @@ cd /vagrant
 . provision/generic/user-setup.sh
 
 # Always start with setting up environment
-#environment_setup
+environment_setup
 
 # Install needed libs
-#install libsqlite3-dev
-#install libpq-dev
-#install_talib
+install libsqlite3-dev
+install libpq-dev
+install_talib
 
 # Install database
-#postgresql_install
+postgresql_install
 
 # Provision the different user accounts
 . provision/user-vagrant.sh
