@@ -16,7 +16,7 @@ function install_talib() {
       --with-talib-lib=/usr/local/lib
 EOF
 
-  cd vendor/ && rm -r ta-lib
+  ( cd vendor/ && rm -r ta-lib )
 
 }
 

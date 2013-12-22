@@ -36,3 +36,4 @@ postgresql_create_database_and_role() {
 }
 
 export -f postgresql_install
+export -f postgresql_create_database_and_role

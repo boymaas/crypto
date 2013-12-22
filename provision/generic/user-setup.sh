@@ -5,7 +5,9 @@ function user_create_with_password() {
   useradd -m -p $pass $1 -s /bin/bash
 }
 
-add_user_with_password 'crypto' 'gekko' 
+function user_sudo_nopasswd() {
+  echo "$1    ALL=(ALL:ALL) NOPASSWD: ALL" >>/etc/sudoers
+}
 
 function user_generate_ssh_keys() {
   echo "Generate ssh keys"
@@ -17,8 +19,15 @@ EOS
 }
 
 user_install_github_keys () {
-  cat provision/user-github-keys/id_rsa >~$1/.ssh/id_rsa
-  cat provision/user-github-keys/id_rsa.pub >~$1/.ssh/id_rsa.pub
+  cat provision/user-github-keys/id_rsa >/home/$1/.ssh/id_rsa
+  cat provision/user-github-keys/id_rsa.pub >/home/$1/.ssh/id_rsa.pub
+}
+
+user_install_authorized_key() {
+  auth_keys_file=/home/$1/.ssh/authorized_keys
+  cat provision/user-deploy-keys/$2 >>$auth_keys_file
+  chown $1 $auth_keys_file
+  chmod 600 $auth_keys_file
 }
 
 # echo "Enabling crypto user ssh"
@@ -32,8 +41,8 @@ EOS
 }
 
 
-echo "Install rbenv for this user so deploy can go"
 function user_install_rbenv() {
+echo "Install rbenv for this user so deploy can go"
   sudo -u $1 -i <<EOF
     git clone https://github.com/sstephenson/rbenv.git .rbenv
     echo 'export PATH="\$HOME/.rbenv/bin:\$PATH"' >> .profile
@@ -43,8 +52,8 @@ function user_install_rbenv() {
 EOF
 }
 
-echo "Install the local ruby version and rbenv sudo cuz we need it"
 function user_install_rbenv_ruby() {
+echo "Install the local ruby version and rbenv sudo cuz we need it"
   sudo -u $1 -i <<EOF
     rbenv install 2.0.0-p247
     rbenv system 2.0.0-p247
