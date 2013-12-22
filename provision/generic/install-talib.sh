@@ -15,6 +15,9 @@ function install_talib() {
       --with-talib-include=/usr/local/include/ta-lib/ \
       --with-talib-lib=/usr/local/lib
 EOF
+
+  cd vendor/ && rm -r ta-lib
+
 }
 
 export -f install_talib

@@ -1,0 +1,2 @@
+CRYPTO_PRODUCTION=1
+CRYPTO_TRADER_DATABASE_URL=postgres://crypto_trader:crypto_trader@localhost/crypto_trader

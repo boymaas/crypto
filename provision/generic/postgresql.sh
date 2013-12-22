@@ -27,4 +27,12 @@ service postgresql restart
 echo "End PostgreSQL"
 }
 
+
+postgresql_create_database_and_role() {
+  # echo "Creating role and database"
+  sudo -u postgres psql -c "create role $1 with login createdb superuser password '$1';"
+  sudo -u postgres psql -c "create database $1;"
+  sudo -u postgres psql -c "grant all on database $1 to $1;"
+}
+
 export -f postgresql_install

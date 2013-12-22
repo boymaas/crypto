@@ -1,9 +1,3 @@
-function user_create_database_and_roles() {
-  # echo "Creating role and database"
-  sudo -u postgres psql -c "create role $1 with login createdb superuser password '$1';"
-  sudo -u postgres psql -c "create database $1;"
-  sudo -u postgres psql -c "grant all on database $1 to $1;"
-}
 
 function user_create_with_password() {
   echo "Create user to run app under"
@@ -15,9 +9,16 @@ add_user_with_password 'crypto' 'gekko'
 
 function user_generate_ssh_keys() {
   echo "Generate ssh keys"
+  # first generate to be sure they are there
+  # and correct seggins
   sudo -u $1 -i <<EOS
   ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa
 EOS
+}
+
+user_install_github_keys () {
+  cat provision/user-github-keys/id_rsa >~$1/.ssh/id_rsa
+  cat provision/user-github-keys/id_rsa.pub >~$1/.ssh/id_rsa.pub
 }
 
 # echo "Enabling crypto user ssh"
@@ -30,9 +31,6 @@ function user_add_github_keys() {
 EOS
 }
 
-echo "Adding environment file for app"
-cp provision/crypto-environment ~crypto/environment
-chown crypto.crypto ~crypto/environment
 
 echo "Install rbenv for this user so deploy can go"
 function user_install_rbenv() {
@@ -59,9 +57,12 @@ function user_install_rbenv_ruby() {
 EOF
 }
 
-function user_setup() {
-  user_create_database_and_roles $1
+user_create_and_setup() {
   user_create_with_password $1
+  user_setup $1
+}
+
+function user_setup() {
   user_generate_ssh_keys $1
   user_add_github_keys $1
   user_install_rbenv $1
@@ -69,4 +70,6 @@ function user_setup() {
 }
 
 export -f user_setup
+export -f user_create_and_setup
+export -f user_install_github_keys
 
