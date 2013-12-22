@@ -1,4 +1,0 @@
-export BITCOIND_RPC_USER='bitcoind'
-export BITCOIND_RPC_PASSWORD='0IyelH9gQCVlQ'
-
-

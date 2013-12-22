@@ -6,7 +6,6 @@ echo "Begin PostgreSQL"
 
 echo "Installing Postgres 9.1"
 apt-get install -y postgresql-9.1
-apt-get install -y libpq-dev
 
 echo "Creating role"
 sudo -u postgres psql -c "create role crypto login createdb password 'crypto';"

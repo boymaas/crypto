@@ -9,14 +9,10 @@ cd /vagrant
 # # Install bitcoind
 # . provision/bitcoind.sh
 
-# In development mode, so we can develop inside vagrant
-. provision/homedir.sh
-
-# Rbenv ruby setup
-. provision/ruby.sh
-
 # Postgresql
 . provision/postgresql.sh
 
 # Configure our crypto user
-. provision/crypto-trader-setup.sh
+. provision/user-vagrant.sh
+. provision/user-crypto.sh
+. provision/user-crypto-trader.sh

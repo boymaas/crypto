@@ -1,5 +1,5 @@
-install_homedir() {
-  sudo -u vagrant -i <<EOF
+user_homedir_dotfiles() {
+  sudo -u $1 -i <<EOF
     # install home dir
     git clone https://github.com/boymaas/dotfiles.git
     mv dotfiles/.git .
@@ -8,12 +8,12 @@ install_homedir() {
 EOF
 }
 
-install_vimconfig() {
+user_homedir_vim() {
   # we need a vim with ruby support build in to compile against
   # command-T
   install vim-nox
 
-  sudo -u vagrant -i <<EOF
+  sudo -u $1 -i <<EOF
     if [ ! -L .vimrc ]; then
       # install vim config files
       git clone https://github.com/boymaas/vimfiles.git 
@@ -41,10 +41,10 @@ EOF
 
 }
 
-install_tmux() {
+user_homedir_tmux() {
   install cmake
 
-  sudo -u vagrant -i <<EOF
+  sudo -u $1 -i <<EOF
     git clone https://github.com/tony/tmux-config.git ~/.tmux-tony
     ln -s ~/.tmux-tony/.tmux.conf ~/.tmux.conf
     cd ~/.tmux-tony
@@ -56,10 +56,16 @@ install_tmux() {
     sudo make install
     cd ~
 EOF
-
 }
 
+user_homedir_all() {
+  user_homedir_dotfiles $1
+  user_homedir_vim $1
+  user_homedir_tmux $1
+}
 
-install_homedir
-install_vimconfig
-install_tmux
+export -f user_homedir_tmux
+export -f user_homedir_vim
+export -f user_homedir_dotfiles
+
+export -f user_homedir_all
