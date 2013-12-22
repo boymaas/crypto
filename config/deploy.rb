@@ -17,6 +17,12 @@ set :deploy_to, '/home/crypto'
 set :repository, 'git@github.com:boymaas/crypto.git'
 set :branch, 'master'
 
+unless ENV['production_deploy']
+  set :domain, '192.168.33.10'
+  # set :port, '2222'     # SSH port number.
+  set :identity_file, "#{ENV['HOME']}/.vagrant.d/insecure_private_key"
+end
+
 # Manually create these paths in shared/ (eg: shared/config/database.yml) in your server.
 # They will be linked in the 'deploy:link_shared_paths' step.
 set :shared_paths, ['config/database.yml', 'log']
@@ -24,6 +30,8 @@ set :shared_paths, ['config/database.yml', 'log']
 # Optional settings:
 set :user, 'crypto'    # Username in the server to SSH to.
 #   set :port, '30000'     # SSH port number.
+#
+# Vagrant settings
 
 set :foreman_app, :crypto
 set :foreman_user, :crypto
