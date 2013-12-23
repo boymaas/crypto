@@ -12,7 +12,7 @@ require_relative 'deploy/foreman'
 #   repository   - Git repo to clone from. (needed by mina/git)
 #   branch       - Branch name to deploy. (needed by mina/git)
 
-set :domain, 'stockers.nl'
+set :domain, '162.243.211.250'
 set :deploy_to, '/home/crypto'
 set :repository, 'git@github.com:boymaas/crypto.git'
 set :branch, 'master'
@@ -90,7 +90,7 @@ end
 task :link_extra_shared_paths => :environment do
     queue  %{
       echo "-----> linking extra shared paths"
-      #{echo_cmd(%{ln -s "#{deploy_to}/#{shared_path}/config/env" "./.env"})}
+      #{echo_cmd(%{ln -s "#{deploy_to}/environment" "./.env"})}
     }
 end
 
