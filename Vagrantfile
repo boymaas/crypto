@@ -12,13 +12,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "precise32"
 
-  # config.ssh.private_key_path = "~/.ssh/id_rsa"
-  # config.vm.provider :digital_ocean do |provider|
-  #   provider.client_id = "djMb4jN3jCDeKuzCNhY5K"
-  #   provider.api_key = "2d449f5aef421e18cbb4dd72f5834a9d"
-  #   provider.image = "Ubuntu 12.10 x64"
-  #   provider.region = "New York 2"
-  # end
+  config.vm.provider :digital_ocean do |provider, override|
+    override.ssh.private_key_path = '~/.ssh/id_rsa'
+    override.vm.box = 'digital_ocean'
+    override.vm.box_url = "https://github.com/smdahlen/vagrant-digitalocean/raw/master/box/digital_ocean.box"
+
+    provider.image = "Ubuntu 12.04.3 x32"
+    provider.region = "New York 2"
+
+    provider.client_id = "djMb4jN3jCDeKuzCNhY5K"
+    provider.api_key = "2d449f5aef421e18cbb4dd72f5834a9d"
+  end
+
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
   # config.vm.box_url = "http://domain.com/path/to/above.box"
