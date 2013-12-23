@@ -9,8 +9,6 @@ gem 'foreman'
 
 gem 'crypto_trader', :git => 'git@github.com:boymaas/crypto_trader.git', :branch => :master
 
-gem 'lazy_high_charts'
-
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 gem 'sequel'
@@ -43,8 +41,6 @@ gem "haml"
 gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
 gem "twitter-bootstrap-rails", :git => 'https://github.com/seyhunak/twitter-bootstrap-rails.git', :branch => 'bootstrap3'
 
-
-gem "tabletastic"
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

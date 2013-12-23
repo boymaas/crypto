@@ -6,6 +6,13 @@ Crypto::Application.routes.draw do
     
   end
 
+  resources :markets do
+    member do
+      get :data
+    end
+    
+  end
+
   # You can have the root of your site routed with "root"
   root 'accounts#index'
 

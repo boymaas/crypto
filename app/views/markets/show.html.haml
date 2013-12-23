@@ -1,0 +1,78 @@
+%h2= @market.label
+
+
+#market_chart{:style => "min-width: 400px; height: 500px; margin: 0 auto"}
+
+%h3 Account trades
+
+- @accounts.each do |account|
+  %h4 Account Trades #{account.label}
+
+  - account_trades = account.trades_dataset.where(:market => @market).reverse_order(:timestamp)
+  %table.table
+    %thead
+      %tr
+        %th Timestamp
+        %th Type
+        %th Quantity
+        %th Price
+        %th Total
+        %th Fee
+    %tbody
+      - account_trades.each do |trade|
+        %tr
+          %td= trade.timestamp
+          %td= trade.type
+          %td= trade.quantity
+          %td= trade.price
+          %td= trade.total
+          %td= trade.fee
+
+:coffeescript
+  $ ->
+    $.getJSON "#{ data_market_path(@market.id) }", (data) ->
+
+      # split the data set into ohlc and volume
+      ohlc = []
+      volume = []
+      dataLength = data.length
+
+      for e in data
+        ohlc.push [e[0], e[1]]
+        # the date
+        volume.push [e[0], e[2]] 
+
+      $("#market_chart").highcharts "StockChart",
+        rangeSelector:
+          selected: 1
+
+        title:
+          text: "#{@market.label} average trading price"
+
+        yAxis: [
+          title:
+            text: "AVG TP"
+
+          height: 200
+          lineWidth: 2
+        ,
+          title:
+            text: "Volume"
+
+          top: 280
+          height: 100
+          offset: 0
+          lineWidth: 2
+        ]
+
+        series: [
+          type: "line"
+          name: "#{@market.primary_currency_code}"
+          data: ohlc
+        ,
+          type: "column"
+          name: "Volume BTC"
+          data: volume
+          yAxis: 1
+          
+        ]

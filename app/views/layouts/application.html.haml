@@ -25,8 +25,12 @@
     / For all other devices
     / Size should be 32 x 32 pixels
     = favicon_link_tag 'favicon.ico', :rel => 'shortcut icon' 
-    
+
+
     = javascript_include_tag "application" 
+    %script{:src => "http://code.highcharts.com/stock/highstock.js"}
+    %script{:src => "http://code.highcharts.com/stock/modules/exporting.js"}
+
   %body
     .navbar.navbar-inverse
       .container
@@ -54,7 +58,7 @@
                 %ul.nav.nav-list
                   - mpart.each do |m|
                     %li
-                      = link_to m.label, "#"  
+                      = link_to m.label, market_path(m.id)
           / /.well
         / /span
       / /row
