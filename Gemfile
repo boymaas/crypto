@@ -44,6 +44,7 @@ gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) support
 gem "twitter-bootstrap-rails", :git => 'https://github.com/seyhunak/twitter-bootstrap-rails.git', :branch => 'bootstrap3'
 
 
+gem "tabletastic"
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

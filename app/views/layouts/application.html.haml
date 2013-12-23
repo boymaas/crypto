@@ -35,25 +35,26 @@
             %span.icon-bar
             %span.icon-bar
             %span.icon-bar
-          %a.navbar-brand{:href => "#"} Crypto
-          .nav-collapse.collapse.navbar-responsive-collapse
-            %ul.nav.navbar-nav
-              %li= link_to "Link1", "/path1"  
-              %li= link_to "Link2", "/path2"  
-              %li= link_to "Link3", "/path3"  
+          %a.navbar-brand{:href => root_path} Crypto
+        .collapse.navbar-collapse.navbar-right
+          %ul.nav.navbar-nav
+            %li= link_to "Link1", "/path1"  
+            %li= link_to "Link2", "/path2"  
+            %li= link_to "Link3", "/path3"  
     .container
       .row
         .col-lg-9
           = bootstrap_flash 
           = yield 
         .col-lg-3
-          .well.sidebar-nav
-            %h3 Sidebar
-            %ul.nav.nav-list
-              %li.nav-header Sidebar
-              %li= link_to "Link1", "/path1"  
-              %li= link_to "Link2", "/path2"  
-              %li= link_to "Link3", "/path3"  
+          - markets = CryptoTrader::Model::Market.where(:secondary_currency_code => 'BTC').order(:primary_currency_code).all
+          - markets.each_slice(markets.count / 2) do |mpart|
+            .col-lg-6
+              .nav.nav-stacked.nav-pills
+                %ul.nav.nav-list
+                  - mpart.each do |m|
+                    %li
+                      = link_to m.label, "#"  
           / /.well
         / /span
       / /row

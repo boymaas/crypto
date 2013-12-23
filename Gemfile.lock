@@ -182,6 +182,7 @@ GEM
     sqlite3 (1.3.8)
     ta-indicator (0.1.1)
       talib_ruby
+    tabletastic (0.1.3)
     talib_ruby (1.0.5)
     terminal-table (1.4.5)
     therubyracer (0.11.4)
@@ -226,6 +227,7 @@ DEPENDENCIES
   sdoc
   sequel
   sqlite3
+  tabletastic
   therubyracer
   turbolinks
   twitter-bootstrap-rails!

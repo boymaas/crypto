@@ -1,0 +1,16 @@
+%h2 Accounts
+
+%table.table
+  %thead
+    %tr
+      %th Label
+      %th Crytsy Pub Key
+      %th Bot Runs
+      %th Actions
+
+  - @accounts.each do |account|
+    %tr
+      %td= account.label
+      %td= account.cryptsy_key_public
+      %td= account.bot_runs.count
+      %td= link_to 'Details', account_path(account)
