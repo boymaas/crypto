@@ -35,12 +35,16 @@
       # split the data set into ohlc and volume
       ohlc = []
       volume = []
+      ema1 = []
+      ema2 = []
       dataLength = data.length
 
       for e in data
         ohlc.push [e[0], e[1]]
         # the date
         volume.push [e[0], e[2]] 
+        ema1.push [e[0], e[3]] 
+        ema2.push [e[0], e[4]] 
 
       $("#market_chart").highcharts "StockChart",
         rangeSelector:
@@ -57,7 +61,7 @@
           lineWidth: 2
         ,
           title:
-            text: "Volume"
+            text: "Volume BTC"
 
           top: 280
           height: 100
@@ -69,6 +73,17 @@
           type: "line"
           name: "#{@market.primary_currency_code}"
           data: ohlc
+          yAxis: 0
+        ,
+          type: "line"
+          name: "ema1"
+          data: ema1
+          yAxis: 0
+        ,
+          type: "line"
+          name: "ema2"
+          data: ema2
+          yAxis: 0
         ,
           type: "column"
           name: "Volume BTC"
