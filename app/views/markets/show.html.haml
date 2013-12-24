@@ -31,8 +31,20 @@
 
       $("#market_chart").highcharts "StockChart",
         rangeSelector:
-          selected: 0
+          selected: 3
           buttons: [
+            type: 'hour',
+            count: 4,
+            text: '4h'
+          ,
+            type: 'hour',
+            count: 8,
+            text: '8h'
+          ,
+            type: 'hour',
+            count: 12,
+            text: '12h'
+          ,
             type: 'day',
             count: 1,
             text: '1d'
