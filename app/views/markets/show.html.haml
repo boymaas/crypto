@@ -9,24 +9,7 @@
   %h4 Account Trades #{account.label}
 
   - account_trades = account.trades_dataset.where(:market => @market).reverse_order(:timestamp)
-  %table.table
-    %thead
-      %tr
-        %th Timestamp
-        %th Type
-        %th Quantity
-        %th Price
-        %th Total
-        %th Fee
-    %tbody
-      - account_trades.each do |trade|
-        %tr
-          %td= trade.timestamp
-          %td= trade.type
-          %td= trade.quantity
-          %td= trade.price
-          %td= trade.total
-          %td= trade.fee
+  = render 'shared/account_trades', :account_trades => account_trades
 
 :coffeescript
   $ ->
@@ -48,10 +31,38 @@
 
       $("#market_chart").highcharts "StockChart",
         rangeSelector:
-          selected: 1
+          selected: 0
+          buttons: [
+            type: 'day',
+            count: 1,
+            text: '1d'
+          ,
+            type: 'month',
+            count: 1,
+            text: '1m'
+          ,
+            type: 'month',
+            count: 3,
+            text: '3m'
+          ,
+            type: 'month',
+            count: 6,
+            text: '6m'
+          ,
+            type: 'year',
+            count: 1,
+            text: '1y'
+          ,
+            type: 'all',
+            text: 'All'
+          ]
 
         title:
-          text: "#{@market.label} average trading price"
+          text: "#{@market.label}"
+
+        subtitle:
+          text: "Average Trading Price / Volume"
+
 
         yAxis: [
           title:
@@ -76,12 +87,12 @@
           yAxis: 0
         ,
           type: "line"
-          name: "ema1"
+          name: "EMA 24 Short"
           data: ema1
           yAxis: 0
         ,
           type: "line"
-          name: "ema2"
+          name: "EMA 48 Long"
           data: ema2
           yAxis: 0
         ,
