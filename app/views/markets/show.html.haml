@@ -1,7 +1,7 @@
 %h2
   = @market.label
   .small
-    #{ Time.now.utc }
+    MS #{ @market_state.timestamp.utc } (#{ time_ago_in_words @market_state.timestamp} ago)
 
 
 = render 'market_stock_chart'
