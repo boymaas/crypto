@@ -2,8 +2,9 @@ user_create_and_setup 'crypto'
 
 user_install_github_keys 'crypto'
 user_install_authorized_key 'crypto' 'macbook-pro.pub'
-
 user_sudo_nopasswd 'crypto'
+
+postgresql_create_database_and_role 'crypto'
 
 # echo "Install database yaml, for use with mina"
 sudo -u crypto -i <<EOS
