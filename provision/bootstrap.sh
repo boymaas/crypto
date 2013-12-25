@@ -15,6 +15,7 @@ environment_setup
 # Install needed libs
 install libsqlite3-dev
 install libpq-dev
+install libreadline-dev
 install_talib
 
 # Install database
