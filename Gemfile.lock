@@ -1,10 +1,11 @@
 GIT
   remote: git@github.com:boymaas/crypto_trader.git
-  revision: 5ee3668c0e2f64edaff21da9117b02532013ae6d
+  revision: 17218543657e97dfcefed4bf5e8e8e2e8ffd27a4
   branch: master
   specs:
     crypto_trader (0.0.1)
       activesupport (~> 4)
+      cache_method (= 0.2.6)
       colored (= 1.2)
       cryptsy-api (= 0.0.3)
       pg (~> 0.17)
@@ -54,6 +55,9 @@ GEM
     atomic (1.1.14)
     bcrypt-ruby (3.1.2)
     builder (3.1.4)
+    cache (0.4.0)
+    cache_method (0.2.6)
+      cache (>= 0.2.1)
     coderay (1.1.0)
     coffee-rails (4.0.1)
       coffee-script (>= 2.2.0)
