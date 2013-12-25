@@ -41,6 +41,7 @@ set_default :foreman_app,  lambda { application }
 set_default :foreman_user, lambda { user }
 set_default :foreman_log,  lambda { "#{deploy_to!}/#{shared_path}/log" }
 set_default :foreman_port, lambda { 6000 }
+set_default :foreman_templates, lambda { "#{deploy_to}/current/config/deploy/foreman" }
 set_default :foreman_concurrency, lambda { Hash.new }
 
 namespace :foreman do
@@ -52,7 +53,7 @@ namespace :foreman do
                     ""
                   end
 
-    export_cmd = "rbenv sudo bundle exec foreman export upstart /etc/init -a #{foreman_app} -u #{foreman_user} -l #{foreman_log} -p #{foreman_port} #{concurrency}"
+    export_cmd = "rbenv sudo bundle exec foreman export upstart /etc/init -a #{foreman_app} -u #{foreman_user} -l #{foreman_log} -p #{foreman_port} -t #{foreman_templates} #{concurrency}"
 
     queue %{
       echo "-----> Exporting foreman procfile for #{foreman_app}"
