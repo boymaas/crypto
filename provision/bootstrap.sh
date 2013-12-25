@@ -23,6 +23,9 @@ install_talib
 # we need a mailserver to send mails
 install postfix
 
+# for server side caching
+install redis-server
+
 # Install database
 postgresql_install
 
