@@ -32,3 +32,6 @@
             :account_trades => position.trades_to_reach_balance,
             :no_thead => false
 
+%h4 Recent trades
+= render 'shared/account_trades', :account_trades => @account_trades
+
