@@ -26,5 +26,5 @@
       %td{colspan: 8}
         .collapse{:id => "position_trades_#{position.currency_code}"}
           = render 'shared/account_trades',
-            :account_trades => position.trades_to_reach_balance,
+            :account_trades => position.trades_to_reach_balance.reverse,
             :no_thead => false
