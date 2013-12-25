@@ -12,9 +12,11 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery.timeago
 //= require twitter/bootstrap
 //= require turbolinks
 //= require bootstrap
+//= require timeago
 //
 //
 //@ require_tree .
