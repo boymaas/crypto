@@ -1,3 +1,34 @@
-%h4 Recent Trades #{@account.label}
+%h4 
+  Portfolio
+  .small
+    click on position to see trades to reach balance
 
-= render 'shared/account_trades', :account_trades => @account_trades
+%table#positions.table.table-small
+  %thead
+    %th Currency
+    %th Quantity
+    %th Hold
+    %th LTP
+    %th ATP (10 trades)
+    %th Base price
+    %th Potential Profit
+
+  - @portfolio.positions.each_with_index do |position, i|
+    %tr{:'data-toggle' => 'collapse', 
+        :'data-target' => "#position_trades_#{position.currency_code}",
+        :'data-parent' => "#positions" }
+      %td= position.currency_code
+      %td= "%.8f" % position.quantity
+      %td= "%.8f" % position.hold
+      %td= "%.8f" % position.last_trade_price
+      %td= "%.8f" % position.avg_trading_price
+      %td= "%.8f" % position.base_price
+      %td= "%.8f" % position.potential_profit
+
+    %tr
+      %td{colspan: 7}
+        .collapse{:id => "position_trades_#{position.currency_code}"}
+          = render 'shared/account_trades',
+            :account_trades => position.trades_to_reach_balance,
+            :no_thead => false
+

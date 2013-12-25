@@ -1,13 +1,15 @@
-%table.table
-  %thead
-    %tr
-      %th Timestamp
-      %th Type
-      %th Quantity
-      %th Market
-      %th Price
-      %th Total
-      %th Fee
+- no_thead = false unless defined?(no_thead)
+%table.table.table-striped
+  - unless no_thead
+    %thead
+      %tr
+        %th Timestamp
+        %th Type
+        %th Quantity
+        %th Market
+        %th Price
+        %th Total
+        %th Fee
   %tbody
     - account_trades.each do |trade|
       %tr
