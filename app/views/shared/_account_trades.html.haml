@@ -12,6 +12,7 @@
         %th Fee
   %tbody
     - account_trades.each do |trade|
+      - next if trade.is_a?  CryptoTrader::TradeStub
       %tr
         %td= trade.timestamp.in_time_zone('UTC')
         %td= trade.type

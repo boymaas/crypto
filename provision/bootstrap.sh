@@ -20,6 +20,9 @@ install libpq-dev
 install libreadline-dev
 install_talib
 
+# we need a mailserver to send mails
+install postfix
+
 # Install database
 postgresql_install
 
