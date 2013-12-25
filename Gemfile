@@ -9,6 +9,8 @@ gem 'foreman', '0.63.0'
 
 gem 'devise'
 
+gem 'redis-rails'
+
 if ENV['crypto_trader_local']
   gem 'crypto_trader', :path => '../crypto_trader/'
 else
