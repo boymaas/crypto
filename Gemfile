@@ -53,8 +53,6 @@ group :doc do
   gem 'sdoc', require: false
 end
 
-gem 'rb-readline'
-
 
 
 # Use ActiveModel has_secure_password
