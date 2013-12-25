@@ -1,7 +1,16 @@
 - data_collector_run = CryptoTrader::Model::DataCollectorRun.order(:id).last
+- bot_run = CryptoTrader::Model::BotRun.order(:id).last
   
 Server time: 
 = Time.now.utc
-| Last data sync
-= time_ago_in_words data_collector_run.timestamp.utc  
-ago
+| LDS
+%span.has-tooltip{:'data-toggle'=> 'tooltip', :'data-placement' => 'bottom', :'data-original-title' => "Last DataCollector Run"}
+  = time_ago_in_words data_collector_run.timestamp.utc  
+  ago
+| LBR
+%span.has-tooltip{:'data-toggle'=> 'tooltip', :'data-placement' => 'bottom', :'data-original-title' => "Last Bot Run"}
+  = time_ago_in_words bot_run.timestamp.utc  
+  ago
+
+:javascript
+  $(".has-tooltip").tooltip()
