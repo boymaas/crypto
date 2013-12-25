@@ -16,7 +16,7 @@ production:
   host: localhost
   adapter: postgresql
   encoding: unicode
-  database: cypto
+  database: crypto
   pool: 5
   username: crypto
   password: crypto
