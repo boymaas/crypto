@@ -1,0 +1,112 @@
+#market_chart{:style => "min-width: 400px; height: 500px; margin: 0 auto"}
+:coffeescript
+  $ ->
+    $.getJSON "#{ data_market_path(@market.id) }", (data) ->
+
+      # split the data set into ohlc and volume
+      ohlc = []
+      volume = []
+      ema1 = []
+      ema2 = []
+      dataLength = data.length
+
+      for e in data
+        ohlc.push [e[0], e[1]]
+        # the date
+        volume.push [e[0], e[2]] 
+        ema1.push [e[0], e[3]] 
+        ema2.push [e[0], e[4]] 
+
+      $("#market_chart").highcharts "StockChart",
+        rangeSelector:
+          selected: 3
+          buttons: [
+            type: 'hour',
+            count: 4,
+            text: '4h'
+          ,
+            type: 'hour',
+            count: 8,
+            text: '8h'
+          ,
+            type: 'hour',
+            count: 12,
+            text: '12h'
+          ,
+            type: 'day',
+            count: 1,
+            text: '1d'
+          ,
+            type: 'day',
+            count: 2,
+            text: '2d'
+          ,
+            type: 'day',
+            count: 3,
+            text: '3d'
+          ,
+            type: 'day',
+            count: 5,
+            text: '5d'
+          ,
+            type: 'month',
+            count: 1,
+            text: '1m'
+          ,
+            type: 'month',
+            count: 6,
+            text: '6m'
+          ,
+            type: 'year',
+            count: 1,
+            text: '1y'
+          ,
+            type: 'all',
+            text: 'All'
+          ]
+
+        title:
+          text: "#{@market.label}"
+
+        subtitle:
+          text: "Average Trading Price / Volume"
+
+
+        yAxis: [
+          title:
+            text: "AVG TP"
+
+          height: 200
+          lineWidth: 2
+        ,
+          title:
+            text: "Volume BTC"
+
+          top: 280
+          height: 100
+          offset: 0
+          lineWidth: 2
+        ]
+
+        series: [
+          type: "line"
+          name: "#{@market.primary_currency_code}"
+          data: ohlc
+          yAxis: 0
+        ,
+          type: "line"
+          name: "EMA 24 Short"
+          data: ema1
+          yAxis: 0
+        ,
+          type: "line"
+          name: "EMA 48 Long"
+          data: ema2
+          yAxis: 0
+        ,
+          type: "column"
+          name: "Volume BTC"
+          data: volume
+          yAxis: 1
+          
+        ]

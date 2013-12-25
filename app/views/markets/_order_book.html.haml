@@ -1,0 +1,11 @@
+%table.table.table-striped
+  %thead
+    %tr
+      %th Quantity
+      %th Price
+      %th Total
+  - orders.each do |o|
+    %tr
+      %td= "%.8f" % o.quantity
+      %td= "%.8f" % o.price
+      %td= "%.8f" % ( o.price * o.quantity )

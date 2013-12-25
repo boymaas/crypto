@@ -2,6 +2,10 @@ class MarketsController < ApplicationController
   def show
     @market = CryptoTrader::Model::Market.find(:id => params.fetch(:id))  
     @accounts = CryptoTrader::Model::Account.all
+    @analyzed_market = CryptoTrader::AnalyzedMarket.new(@market)
+    @market_state = @analyzed_market.market_state
+    @buy_orders = @market_state.buy_orders_dataset.reverse_order(:price).all
+    @sell_orders = @market_state.sell_orders_dataset.order(:price).all
   end
 
   def data
