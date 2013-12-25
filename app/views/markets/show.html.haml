@@ -4,8 +4,7 @@
     MS #{ @market_state.timestamp.utc } 
     = surround '(', ')' do
       %time.timeago{:datetime => @market_state.timestamp.utc.iso8601}
-        = time_ago_in_words(@market_state.timestamp.utc) 
-
+        = @market_state.timestamp.utc.iso8601
 
 = render 'market_stock_chart'
 

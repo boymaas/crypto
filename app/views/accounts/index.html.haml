@@ -8,9 +8,9 @@
       %th Bot Runs
       %th Actions
 
-  - @accounts.each do |account|
+  - @users.each do |user|
     %tr
-      %td= account.label
-      %td= account.cryptsy_key_public
-      %td= account.bot_runs.count
-      %td= link_to 'Details', account_path(account.id)
+      %td= user.email
+      %td= user.crypto_trader_account.cryptsy_key_public
+      %td= user.crypto_trader_account.bot_runs_dataset.count
+      %td= link_to 'Login', become_account_path(user.id)

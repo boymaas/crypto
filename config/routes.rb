@@ -1,9 +1,13 @@
 Crypto::Application.routes.draw do
+  devise_for :admins
   devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
   #
   resources :accounts do
+    member do
+      get :become
+    end
     
   end
 
@@ -19,7 +23,13 @@ Crypto::Application.routes.draw do
   get 'partials/navbar_stats' => 'partials#navbar_stats'
 
   # You can have the root of your site routed with "root"
-  root 'accounts#index'
+  authenticated :user do
+    root 'accounts#show', :as => 'authenticated_user'
+  end
+  authenticated :admin do
+    root 'accounts#index', :as => 'authenticated_admin'
+  end
+  root 'welcome#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

@@ -1,8 +1,8 @@
-class AccountsController < SecuredController
-  # before_filter :authenticate_admin!, :only => :index
+class AccountsController < ApplicationController
+  before_filter :authenticate_admin!, :only => [ :index, :become ]
 
   def index
-    @accounts = CryptoTrader::Model::Account.all
+    @users = User.all
   end
 
   def show
@@ -14,4 +14,15 @@ class AccountsController < SecuredController
 
     @account_trades = @account.trades_dataset.reverse_order(:timestamp).limit(10)
   end
+
+  def become
+    user = User.find(params[:id])
+
+    # NOTE: do not track this login
+    request.env["devise.skip_trackable"] = true
+    sign_in(:user, user)
+
+    redirect_to after_sign_in_path_for(user)
+  end
+
 end
