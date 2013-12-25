@@ -16,7 +16,7 @@ development:
   host: localhost
   adapter: postgresql
   encoding: unicode
-  database: cypto_development
+  database: crypto_development
   pool: 5
   username: crypto
   password: crypto
