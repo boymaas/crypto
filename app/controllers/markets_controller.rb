@@ -1,4 +1,4 @@
-class MarketsController < ApplicationController
+class MarketsController < SecuredController
   def show
     @market = CryptoTrader::Model::Market.find(:id => params.fetch(:id))  
     @accounts = CryptoTrader::Model::Account.all

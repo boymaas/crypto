@@ -1,4 +1,4 @@
-class AccountsController < ApplicationController
+class AccountsController < SecuredController
   def index
     @accounts = CryptoTrader::Model::Account.all
   end
