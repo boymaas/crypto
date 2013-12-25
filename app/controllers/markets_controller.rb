@@ -16,7 +16,7 @@ class MarketsController < SecuredController
     ema_48 = data.map(&:price_avg).indicator(:ema, 48)
 
     data = data.zip(ema_24.zip(ema_48)).flatten
-    data = data.each_slice(3).map {|d,e1,e2| [d.rounded_date.to_i * 1000, d.price_avg.to_f.round(8), d.total_sum.to_f.round(8), e1.to_f.round(8), e2.to_f.round(8)] }
+    data = data.each_slice(3).map {|d,e1,e2| [d.rounded_date.to_i * 1000, d.price_avg.to_f, d.total_sum.to_f, e1.to_f, e2.to_f] }
 
     # render :json => "callback(#{data.to_json});"
     render :json => data.to_json

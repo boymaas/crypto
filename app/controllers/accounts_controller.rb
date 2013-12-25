@@ -8,6 +8,8 @@ class AccountsController < ApplicationController
   def show
     @account = current_user.crypto_trader_account
 
+    @last_data_collector_run = CryptoTrader::Model::DataCollectorRun.order(:id).last.id 
+
     market_data_provider = CryptoTrader::MarketDataProvider.new()
     account_data_provider = CryptoTrader::AccountDataProvider.new(@account)
     @portfolio = CryptoTrader::Portfolio.new(account_data_provider, market_data_provider)
