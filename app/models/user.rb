@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :confirmable, :lockable
 
   def crypto_trader_account
-    @crypto_trader_account ||= CryptoTrader::Model::Account.find(:ext_user_id => self.id)
+    @crypto_trader_account ||= CryptoTrader::Model::Account.find_or_create(:ext_crypto_user_id => self.id) do |account|
+      account.label = email
+    end
   end
 end

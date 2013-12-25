@@ -1,10 +1,12 @@
 class AccountsController < SecuredController
+  # before_filter :authenticate_admin!, :only => :index
+
   def index
     @accounts = CryptoTrader::Model::Account.all
   end
 
   def show
-    @account = CryptoTrader::Model::Account.find(:id => params.fetch(:id))
+    @account = current_user.crypto_trader_account
 
     market_data_provider = CryptoTrader::MarketDataProvider.new()
     account_data_provider = CryptoTrader::AccountDataProvider.new(@account)
