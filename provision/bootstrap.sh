@@ -15,6 +15,8 @@ environment_setup
 # Install needed libs
 install libsqlite3-dev
 install libpq-dev
+# Need this for readline support on irb, if not available 
+# will need to rebuild ruby
 install libreadline-dev
 install_talib
 
