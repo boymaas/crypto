@@ -9,6 +9,7 @@ gem 'foreman', '0.63.0'
 
 gem 'devise'
 
+gem 'rack-cache'
 gem 'redis-rails'
 
 if ENV['crypto_trader_local']
