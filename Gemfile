@@ -7,6 +7,8 @@ gem 'rake'
 gem 'rails', '4.0.2'
 gem 'foreman'
 
+gem 'devise'
+
 if ENV['crypto_trader_local']
   gem 'crypto_trader', :path => '../crypto_trader/'
 else

@@ -52,6 +52,7 @@ GEM
       tzinfo (~> 0.3.37)
     arel (4.0.1)
     atomic (1.1.14)
+    bcrypt-ruby (3.1.2)
     builder (3.1.4)
     coderay (1.1.0)
     coffee-rails (4.0.1)
@@ -73,6 +74,12 @@ GEM
       debugger-ruby_core_source (~> 1.2.4)
     debugger-linecache (1.2.0)
     debugger-ruby_core_source (1.2.4)
+    devise (3.2.2)
+      bcrypt-ruby (~> 3.0)
+      orm_adapter (~> 0.1)
+      railties (>= 3.2.6, < 5)
+      thread_safe (~> 0.1)
+      warden (~> 1.2.3)
     diff-lcs (1.2.5)
     erubis (2.7.0)
     execjs (2.0.2)
@@ -116,6 +123,7 @@ GEM
     multi_json (1.8.2)
     multi_xml (0.5.5)
     open4 (1.3.0)
+    orm_adapter (0.5.0)
     pg (0.17.1)
     polyglot (0.3.3)
     pry (0.9.12.4)
@@ -196,6 +204,8 @@ GEM
     uglifier (2.4.0)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    warden (1.2.3)
+      rack (>= 1.0)
 
 PLATFORMS
   ruby
@@ -205,6 +215,7 @@ DEPENDENCIES
   coffee-rails (~> 4.0.0)
   crypto_trader!
   debugger
+  devise
   foreman
   haml
   html2haml
