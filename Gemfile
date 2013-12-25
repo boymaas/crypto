@@ -5,7 +5,7 @@ gem 'bundler'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rake'
 gem 'rails', '4.0.2'
-gem 'foreman'
+gem 'foreman', '0.63.0'
 
 gem 'devise'
 
