@@ -7,7 +7,11 @@ gem 'rake'
 gem 'rails', '4.0.2'
 gem 'foreman'
 
-gem 'crypto_trader', :git => 'git@github.com:boymaas/crypto_trader.git', :branch => :master
+if ENV['crypto_trader_local']
+  gem 'crypto_trader', :path => '../crypto_trader/'
+else
+  gem 'crypto_trader', :git => 'git@github.com:boymaas/crypto_trader.git', :branch => :master
+end
 
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
