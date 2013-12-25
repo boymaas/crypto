@@ -1,0 +1,7 @@
+- data_collector_run = CryptoTrader::Model::DataCollectorRun.order(:id).last
+  
+Server time: 
+= Time.now.utc
+| Last data sync
+= time_ago_in_words data_collector_run.timestamp.utc  
+ago

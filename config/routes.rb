@@ -13,6 +13,8 @@ Crypto::Application.routes.draw do
     
   end
 
+  get 'partials/navbar_stats' => 'partials#navbar_stats'
+
   # You can have the root of your site routed with "root"
   root 'accounts#index'
 

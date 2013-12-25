@@ -1,9 +1,7 @@
 %h4 
-  Portfolio
-  .small
-    click on position to see trades to reach balance
+  Positions
 
-%table#positions.table.table-small
+%table#positions.table.table-small.table-hover
   %thead
     %th Currency
     %th Quantity
@@ -11,22 +9,25 @@
     %th LTP
     %th ATP (10 trades)
     %th Base price
-    %th Potential Profit
+    %th{:colspan=>2} Potential Profit (%)
 
   - @portfolio.positions.each_with_index do |position, i|
     %tr{:'data-toggle' => 'collapse', 
         :'data-target' => "#position_trades_#{position.currency_code}",
-        :'data-parent' => "#positions" }
+        :'data-parent' => "#positions",
+        :'class' => (position.potential_profit >= 0.0) ? 'success' : 'danger'}
+      - potential_profit_perc = (position.last_trade_price / position.base_price - 1) * 100
       %td= position.currency_code
       %td= "%.8f" % position.quantity
       %td= "%.8f" % position.hold
       %td= "%.8f" % position.last_trade_price
       %td= "%.8f" % position.avg_trading_price
       %td= "%.8f" % position.base_price
-      %td= "%.8f" % position.potential_profit
+      %td= "%.8f" % position.potential_profit 
+      %td= "%.2f%%" % potential_profit_perc
 
     %tr
-      %td{colspan: 7}
+      %td{colspan: 8}
         .collapse{:id => "position_trades_#{position.currency_code}"}
           = render 'shared/account_trades',
             :account_trades => position.trades_to_reach_balance,
