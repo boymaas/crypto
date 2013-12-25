@@ -1,0 +1,10 @@
+%h2 MarketStates for #{@market.label}
+
+%table.table
+  - @market_states.each_slice(3) do |market_states|
+    %tr
+      - market_states.each do |market_state|
+        %td= market_state.timestamp.utc
+        %td= link_to 'Show', market_market_state_path(@market.id, market_state.id)
+
+

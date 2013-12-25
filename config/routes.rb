@@ -10,7 +10,9 @@ Crypto::Application.routes.draw do
     member do
       get :data
     end
-    
+    resources :market_states do
+      
+    end
   end
 
   get 'partials/navbar_stats' => 'partials#navbar_stats'

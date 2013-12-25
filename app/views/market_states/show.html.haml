@@ -1,0 +1,16 @@
+%h3 
+  #{@market_state.market.label} MarketState
+  .small
+    at #{@market_state.timestamp.utc}
+
+
+.row
+  .col-lg-6
+    %h4 Sell orders
+    
+    = render 'shared/order_book', :orders => @sell_orders
+
+  .col-lg-6
+    %h4 Buy orders
+
+    = render 'shared/order_book', :orders => @buy_orders

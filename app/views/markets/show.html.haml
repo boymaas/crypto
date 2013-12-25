@@ -10,13 +10,17 @@
   .col-lg-6
     %h4 Sell orders
     
-    = render 'order_book', :orders => @sell_orders
+    = render 'shared/order_book', :orders => @sell_orders
 
   .col-lg-6
     %h4 Buy orders
 
-    = render 'order_book', :orders => @buy_orders
+    = render 'shared/order_book', :orders => @buy_orders
 
+.row
+
+  %center
+    = link_to 'Browse though historical orderbook states', market_market_states_path(@market.id)
 
 - @accounts.each do |account|
   %h4 Account Trades #{account.label}
