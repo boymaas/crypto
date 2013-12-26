@@ -12,12 +12,16 @@ class MarketsController < SecuredController
     @market = CryptoTrader::Model::Market.find(:id => params.fetch(:id))  
     data = @market.trade_stats_dataset.order(:rounded_date).all
 
+    short = 24
+    long = 48
+    signal = 9
+
     data_avg_price = data.map(&:price_avg)
 
-    ema_24 = data_avg_price.indicator(:ema, 24)
-    ema_48 = data_avg_price.indicator(:ema, 48)
+    ema_24 = data_avg_price.indicator(:ema, short)
+    ema_48 = data_avg_price.indicator(:ema, long)
 
-    macd_i = data_avg_price.indicator(:macd_24_48_9)
+    macd_i = data_avg_price.indicator(:macd,short,long,signal)
     macd = macd_i[:out_macd]
     macd_s = macd_i[:out_macd_signal]
     macd_h = macd_i[:out_macd_hist]

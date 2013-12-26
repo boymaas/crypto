@@ -90,7 +90,7 @@
           top: 290
           height: 100
           offset: 0
-          lineWidth: 2
+          lineWidth: 1
         ,
           title:
             text: "Volume BTC"
@@ -108,30 +108,36 @@
           name: "#{@market.primary_currency_code}"
           data: ohlc
           yAxis: 0
+          lineWidth: 2
         ,
           type: "line"
           name: "EMA 24 Short"
           data: ema1
           yAxis: 0
+          lineWidth: 1
         ,
           type: "line"
           name: "EMA 48 Long"
           data: ema2
           yAxis: 0
+          lineWidth: 1
         ,
           type: "line"
           name: "MACD24/48"
           data: dmac
           yAxis: 1
+          lineWidth: 1
         ,
           type: "line"
           name: "MACDS9"
           data: dmacs
+          lineWidth: 2
           yAxis: 1
         ,
           type: "line"
           name: "MACDH"
           data: dmach
+          lineWidth: 1
           yAxis: 1
         ,
           type: "column"
