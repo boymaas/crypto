@@ -2,7 +2,6 @@
   %thead
     %th Currency
     %th Quantity
-    %th Hold
     %th LTP
     %th ATP@10
     %th Base price
@@ -18,7 +17,6 @@
         :'class' => (position.potential_profit >= 0.0) ? 'success' : 'danger'}
       %td= position.currency_code
       %td= "%.8f" % position.quantity
-      %td= "%.8f" % position.hold
       %td= "%.8f" % position.last_trade_price
       %td= "%.8f" % position.avg_trading_price
       %td= "%.8f" % position.base_price
