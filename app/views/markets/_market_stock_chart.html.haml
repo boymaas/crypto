@@ -1,4 +1,4 @@
-#market_chart{:style => "min-width: 400px; height: 500px; margin: 0 auto"}
+#market_chart{:style => "min-width: 400px; height: 610px; margin: 0 auto"}
 :coffeescript
   $ ->
     $.getJSON "#{ data_market_path(@market.id) }", (data) ->
@@ -8,6 +8,9 @@
       volume = []
       ema1 = []
       ema2 = []
+      dmac = []
+      dmacs = []
+      dmach = []
       dataLength = data.length
 
       for e in data
@@ -16,6 +19,9 @@
         volume.push [e[0], e[2]] 
         ema1.push [e[0], e[3]] 
         ema2.push [e[0], e[4]] 
+        dmac.push [e[0], e[5]] 
+        dmacs.push [e[0], e[6]] 
+        dmach.push [e[0], e[7]] 
 
       $("#market_chart").highcharts "StockChart",
         rangeSelector:
@@ -75,14 +81,20 @@
         yAxis: [
           title:
             text: "AVG TP"
-
           height: 200
           lineWidth: 2
         ,
           title:
-            text: "Volume BTC"
+            text: "MACD24/28/9"
 
-          top: 280
+          top: 290
+          height: 100
+          offset: 0
+          lineWidth: 2
+        ,
+          title:
+            text: "Volume BTC"
+          top: 400
           height: 100
           offset: 0
           lineWidth: 2
@@ -107,9 +119,23 @@
           data: ema2
           yAxis: 0
         ,
+          type: "line"
+          name: "MACD24/48"
+          data: dmac
+          yAxis: 1
+        ,
+          type: "line"
+          name: "MACDS9"
+          data: dmacs
+          yAxis: 1
+        ,
+          type: "line"
+          name: "MACDH"
+          data: dmach
+          yAxis: 1
+        ,
           type: "column"
           name: "Volume BTC"
           data: volume
-          yAxis: 1
-          
+          yAxis: 2
         ]
