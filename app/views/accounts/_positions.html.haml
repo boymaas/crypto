@@ -4,11 +4,14 @@
     %th Quantity
     %th Hold
     %th LTP
-    %th ATP (10 trades)
+    %th ATP@10
     %th Base price
+    %th Investment
     %th{:colspan=>2} Potential Profit (%)
 
+  - positions = positions.sort_by {|p| -1*p.investment }
   - positions.each_with_index do |position, i|
+    - next if position.currency_code == 'Points'
     %tr{:'data-toggle' => 'collapse', 
         :'data-target' => "#position_trades_#{position.currency_code}",
         :'data-parent' => "#positions",
@@ -19,6 +22,7 @@
       %td= "%.8f" % position.last_trade_price
       %td= "%.8f" % position.avg_trading_price
       %td= "%.8f" % position.base_price
+      %td= "%.8f" % position.investment
       %td= "%.8f" % position.potential_profit 
       %td= "%.2f%%" % position.potential_profit_perc
 

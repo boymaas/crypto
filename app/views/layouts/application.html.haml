@@ -118,6 +118,11 @@
           / /.well
         / /span
       / /row
+
+      -# NOTE: this must be here, otherwise ago doesn't take ..
+      :coffee
+        $ ->
+          $("time.timeago").timeago();
       %footer
         %span.pull-right
           &copy; CryptoTrading 2013 | #{ link_to 'Admin', admin_session_path }
