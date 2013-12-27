@@ -1,4 +1,4 @@
-#market_chart{:style => "min-width: 400px; height: 610px; margin: 0 auto"}
+#market_chart{:style => "min-width: 400px; height: 655px; margin: 0 auto"}
 :coffeescript
   $ ->
     $.getJSON "#{ data_market_path(@market.id) }", (data) ->
@@ -11,6 +11,7 @@
       dmac = []
       dmacs = []
       dmach = []
+      bidx = []
       dataLength = data.length
 
       for e in data
@@ -22,6 +23,7 @@
         dmac.push [e[0], e[5]] 
         dmacs.push [e[0], e[6]] 
         dmach.push [e[0], e[7]] 
+        bidx.push [e[0], e[8]] 
 
       $("#market_chart").highcharts "StockChart",
         rangeSelector:
@@ -93,8 +95,15 @@
           lineWidth: 1
         ,
           title:
-            text: "Volume BTC"
+            text: "BIDX"
           top: 400
+          height: 50
+          offset: 0
+          lineWidth: 2
+        ,
+          title:
+            text: "Volume BTC"
+          top: 460
           height: 100
           offset: 0
           lineWidth: 2
@@ -140,8 +149,14 @@
           lineWidth: 1
           yAxis: 1
         ,
+          type: "line"
+          name: "BIDX"
+          data: bidx
+          lineWidth: 1
+          yAxis: 2
+        ,
           type: "column"
           name: "Volume BTC"
           data: volume
-          yAxis: 2
+          yAxis: 3
         ]
