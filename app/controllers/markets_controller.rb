@@ -28,7 +28,9 @@ class MarketsController < SecuredController
 
     bot_i = macd.zip(macd_s).map do |_macd,_signal|
       next if _macd.nil? || _signal.nil?
-      (_macd - _signal) / ((_macd + _signal) / 2)
+      v = (_macd - _signal) / ((_macd + _signal) / 2)
+      v = v > 0.5 ? 0.5 : v
+      v = v < -0.5 ? -0.5 : v
     end
 
     # macd_12_26_9[:out_macd_signal]
