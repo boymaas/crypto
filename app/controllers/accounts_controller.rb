@@ -14,6 +14,13 @@ class AccountsController < ApplicationController
     account_data_provider = CryptoTrader::AccountDataProvider.new(@account)
     @portfolio = CryptoTrader::Portfolio.new(account_data_provider, market_data_provider)
 
+    @bot_run_actions = CryptoTrader::Model::BotRunAction.
+      select(:bot_run_actions.*).
+      join(:bot_runs, :id => :bot_run_id).
+      where(:account_id => @account.id).
+      reverse_order(:id).
+      limit(10)
+
     @account_trades = @account.trades_dataset.reverse_order(:timestamp).limit(10)
   end
 

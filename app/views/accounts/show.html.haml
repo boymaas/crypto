@@ -4,6 +4,10 @@
 = cache(['positions', @last_data_collector_run, (current_user && current_user.id), ( current_admin && current_admin.id )]) do
   = render 'positions', :positions => @portfolio.positions
 
+%h4 Recent actions
+= render 'shared/bot_run_actions', :bot_run_actions => @bot_run_actions
+        
+
 %h4 Recent trades
 = render 'shared/account_trades', :account_trades => @account_trades
 

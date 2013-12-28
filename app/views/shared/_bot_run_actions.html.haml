@@ -1,0 +1,26 @@
+%table.table
+  %thead
+    %tr
+      %th Timestamp
+      %th Type
+      %th Market
+      %th.text-right Quantity
+      %th.text-right Price
+      %th.text-right Total
+      %th.text-right LTP%
+      %th.text-right ATP%
+  %tbody
+    - bot_run_actions.each do |bra|
+      %tr
+        %td
+          %time{:datetime => bra.timestamp.utc.iso8601}><
+            = bra.timestamp.utc
+        %td
+          = bra.type
+          order
+        %td= link_to bra.market.label, market_path(bra.market.id)
+        %td.text-right= "%.8f" % bra.quantity
+        %td.text-right= "%.8f" % bra.price
+        %td.text-right= "%.8f" % ( bra.quantity * bra.price )
+        %td.text-right= "%.3f" % ( bra.price / bra.ltp )
+        %td.text-right= "%.3f" % ( bra.price / bra.atp )
