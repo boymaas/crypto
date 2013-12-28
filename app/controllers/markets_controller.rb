@@ -26,19 +26,14 @@ class MarketsController < SecuredController
     macd_s = macd_i[:out_macd_signal]
     macd_h = macd_i[:out_macd_hist]
 
-    bot_i = macd.zip(macd_s).map do |_macd,_signal|
-      next if _macd.nil? || _signal.nil?
-      v = (_macd - _signal) / ((_macd + _signal) / 2)
-      v = v > 0.5 ? 0.5 : v
-      v = v < -0.5 ? -0.5 : v
-    end
+    macd_crossover = CryptoTrader::Bot::Advisor::Signal::MacdCrossover.new
 
     # macd_12_26_9[:out_macd_signal]
     # macd_12_26_9[:out_macd_hist]
 
     # data = [data, ema_24, ema_48, macd].reverse.inject(macd_s) { |d0, d1| d0.zip(d1) }
-    data = data.zip(ema_24.zip(ema_48.zip(macd.zip(macd_s.zip(macd_h.zip(bot_i)))))).flatten
-    data = data.each_slice(7).map {|d,e1,e2,m,ms,mh,bi| [d.rounded_date.to_i * 1000, d.price_avg.to_f, d.total_sum.to_f, e1.to_f, e2.to_f, m, ms, mh, bi] }
+    data = data.zip(ema_24.zip(ema_48.zip(macd.zip(macd_s.zip(macd_h))))).flatten
+    data = data.each_slice(6).map {|d,e1,e2,m,ms,mh| [d.rounded_date.to_i * 1000, d.price_avg.to_f, d.total_sum.to_f, e1.to_f, e2.to_f, m, ms, mh, macd_crossover.run_on(m,ms,mh,e2)] }
 
     # render :json => "callback(#{data.to_json});"
     render :json => data.to_json
