@@ -1,7 +1,7 @@
 %h4 
   Positions
 
-= cache(['positions', @last_data_collector_run]) do
+= cache(['positions', @last_data_collector_run, (current_user && current_user.id), ( current_admin && current_admin.id )]) do
   = render 'positions', :positions => @portfolio.positions
 
 %h4 Recent trades

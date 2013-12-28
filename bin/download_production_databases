@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# NOTE: no -c flag when dumping, since we recrate databases on import
+echo "Grabbing crypto-producution ..."
+ssh crypto_trader 'sudo -u postgres pg_dump  crypto | gzip' >crypto_production.dump.gz
+echo "Grabbing crypto-trader-production ..."
+ssh crypto_trader 'sudo -u postgres pg_dump  crypto_trader | gzip' >crypto_trader_production.dump.gz

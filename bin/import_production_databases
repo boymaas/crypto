@@ -1,0 +1,10 @@
+#!/bin/bash
+
+psql template1 -h localhost -c "drop database crypto_development"
+psql template1 -h localhost -c "create database crypto_development"
+cat crypto_production.dump.gz | gzip -d | psql crypto_development -h localhost >/dev/null
+
+psql template1 -h localhost -c "drop database crypto_trader_production"
+psql template1 -h localhost -c "create database crypto_trader_production"
+cat crypto_trader_production.dump.gz| gzip -d | psql crypto_trader_production -h localhost >/dev/null
+
