@@ -1,4 +1,4 @@
-#market_chart{:style => "min-width: 400px; height: 605px; margin: 0 auto"}
+#market_chart{:style => "min-width: 380px; height: 705px; margin: 0 auto"}
 :coffeescript
   $ ->
     $.getJSON "#{ data_market_path(@market.id) }", (data) ->
@@ -31,7 +31,6 @@
         name: n
         data: sd
         lineWidth: 1
-        dashStyle: 'ShortDash',
         yAxis: 1
 
       $("#market_chart").highcharts "StockChart",
@@ -98,7 +97,7 @@
           title:
             text: "SIG"
           top: 290
-          height: 100
+          height: 200
           offset: 0
           lineWidth: 2
           plotLines: [
@@ -106,20 +105,20 @@
             color: '#aaf',
             dashStyle: 'LongDash',
             width: 1,
-            value: 0.2,
+            value: 0.5,
             zIndex: 0
           ,
             id: 'limit-max',
             color: '#aaf',
             dashStyle: 'LongDash',
             width: 1,
-            value: -0.2,
+            value: -0.5,
             zIndex: 0
           ]
         ,
           title:
             text: "Volume BTC"
-          top: 400
+          top: 500
           height: 100
           offset: 0
           lineWidth: 2
