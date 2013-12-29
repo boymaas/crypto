@@ -26,7 +26,7 @@ class MarketsController < SecuredController
     ema_long    = data_points_price_avg.indicator(:ema, advisor.conf[:long])
     data_points = data_points.zip(ema_short.zip(ema_long)).flatten.each_slice(4).to_a
 
-    data = data_points.map do |timestamp, mts, emal, emas|
+    data = data_points.map do |timestamp, mts, emas, emal|
       snapshot = snapshots.at(timestamp)
       _, bidx = advisor.run_on(snapshot)
 
