@@ -10,30 +10,34 @@ class MarketsController < SecuredController
 
   def data
     @market = CryptoTrader::Model::Market.find(:id => params.fetch(:id))  
+
+
     data = @market.trade_stats_dataset.order(:rounded_date).all
 
-    short = 24
-    long = 48
-    signal = 9
+    advisor = CryptoTrader::Bot::Advisor::MacdSignalCross.new
+    sig_ema_crossing = CryptoTrader::Bot::Signal::EmaCrossing.new
 
-    data_avg_price = data.map(&:price_avg)
+    # NOTE: running advisor on all snapshots
+    snapshots = CryptoTrader::Snapshots.new(@market)
+    data_points = snapshots.market_trade_stats
+    data_points_price_avg = data_points.map {|e| e[1][:price_avg] }
 
-    ema_24 = data_avg_price.indicator(:ema, short)
-    ema_48 = data_avg_price.indicator(:ema, long)
+    ema_short   = data_points_price_avg.indicator(:ema, advisor.conf[:short])
+    ema_long    = data_points_price_avg.indicator(:ema, advisor.conf[:long])
+    data_points = data_points.zip(ema_short.zip(ema_long)).flatten.each_slice(4).to_a
 
-    macd_i = data_avg_price.indicator(:macd,short,long,signal)
-    macd = macd_i[:out_macd]
-    macd_s = macd_i[:out_macd_signal]
-    macd_h = macd_i[:out_macd_hist]
+    data = data_points.map do |timestamp, mts, emal, emas|
+      snapshot = snapshots.at(timestamp)
+      _, bidx = advisor.run_on(snapshot)
 
-    macd_crossover = CryptoTrader::Bot::Advisor::Signal::MacdCrossover.new
+      signals = advisor.signals.map do |name, signal|
+        [name, signal.run_on(snapshot).to_f]
+      end
 
-    # macd_12_26_9[:out_macd_signal]
-    # macd_12_26_9[:out_macd_hist]
+      ema_crossing = sig_ema_crossing.run_on(snapshot)
+      [timestamp * 1000, mts[:price_avg].to_f, mts[:total_sum].to_f, emas.to_f, emal.to_f, bidx, signals]
+    end
 
-    # data = [data, ema_24, ema_48, macd].reverse.inject(macd_s) { |d0, d1| d0.zip(d1) }
-    data = data.zip(ema_24.zip(ema_48.zip(macd.zip(macd_s.zip(macd_h))))).flatten
-    data = data.each_slice(6).map {|d,e1,e2,m,ms,mh| [d.rounded_date.to_i * 1000, d.price_avg.to_f, d.total_sum.to_f, e1.to_f, e2.to_f, m, ms, mh, macd_crossover.run_on(m,ms,mh,e2)] }
 
     # render :json => "callback(#{data.to_json});"
     render :json => data.to_json

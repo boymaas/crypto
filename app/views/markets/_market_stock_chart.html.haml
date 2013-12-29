@@ -1,4 +1,4 @@
-#market_chart{:style => "min-width: 400px; height: 655px; margin: 0 auto"}
+#market_chart{:style => "min-width: 400px; height: 605px; margin: 0 auto"}
 :coffeescript
   $ ->
     $.getJSON "#{ data_market_path(@market.id) }", (data) ->
@@ -6,24 +6,33 @@
       # split the data set into ohlc and volume
       ohlc = []
       volume = []
-      ema1 = []
-      ema2 = []
-      dmac = []
-      dmacs = []
-      dmach = []
+      emas = []
+      emal = []
       bidx = []
+      signals = {}
       dataLength = data.length
 
       for e in data
         ohlc.push [e[0], e[1]]
         # the date
         volume.push [e[0], e[2]] 
-        ema1.push [e[0], e[3]] 
-        ema2.push [e[0], e[4]] 
-        dmac.push [e[0], e[5]] 
-        dmacs.push [e[0], e[6]] 
-        dmach.push [e[0], e[7]] 
-        bidx.push [e[0], e[8]] 
+        emas.push [e[0], e[3]] 
+        emal.push [e[0], e[4]] 
+        # ;bidxt0.push [e[0], 0.2] 
+        # ;bidxt1.push [e[0], -0.2] 
+        bidx.push [e[0], e[5]] 
+
+        for [n, v] in e[6]
+          signals[n] ||= []
+          signals[n].push [e[0], v]
+
+      signal_series = for n, sd of signals
+        type: "line"
+        name: n
+        data: sd
+        lineWidth: 1
+        dashStyle: 'ShortDash',
+        yAxis: 1
 
       $("#market_chart").highcharts "StockChart",
         rangeSelector:
@@ -87,23 +96,30 @@
           lineWidth: 2
         ,
           title:
-            text: "MACD24/28/9"
-
+            text: "SIG"
           top: 290
           height: 100
           offset: 0
-          lineWidth: 1
-        ,
-          title:
-            text: "BIDX"
-          top: 400
-          height: 50
-          offset: 0
           lineWidth: 2
+          plotLines: [
+            id: 'limit-min',
+            color: '#aaf',
+            dashStyle: 'LongDash',
+            width: 1,
+            value: 0.2,
+            zIndex: 0
+          ,
+            id: 'limit-max',
+            color: '#aaf',
+            dashStyle: 'LongDash',
+            width: 1,
+            value: -0.2,
+            zIndex: 0
+          ]
         ,
           title:
             text: "Volume BTC"
-          top: 460
+          top: 400
           height: 100
           offset: 0
           lineWidth: 2
@@ -121,42 +137,25 @@
         ,
           type: "line"
           name: "EMA 24 Short"
-          data: ema1
+          data: emas
           yAxis: 0
           lineWidth: 1
         ,
           type: "line"
           name: "EMA 48 Long"
-          data: ema2
+          data: emal
           yAxis: 0
           lineWidth: 1
         ,
           type: "line"
-          name: "MACD24/48"
-          data: dmac
-          yAxis: 1
-          lineWidth: 1
-        ,
-          type: "line"
-          name: "MACDS9"
-          data: dmacs
-          lineWidth: 2
-          yAxis: 1
-        ,
-          type: "line"
-          name: "MACDH"
-          data: dmach
-          lineWidth: 1
-          yAxis: 1
-        ,
-          type: "line"
-          name: "BIDX"
+          name: "Advisor"
           data: bidx
           lineWidth: 1
-          yAxis: 2
-        ,
+          yAxis: 1
+        ].concat(signal_series).concat [
           type: "column"
           name: "Volume BTC"
           data: volume
-          yAxis: 3
+          yAxis: 2
         ]
+
