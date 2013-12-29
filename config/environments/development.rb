@@ -31,4 +31,6 @@ Crypto::Application.configure do
 
   # NOTE: disable this again
   config.action_controller.perform_caching = false
+
+  RequireReloader.watch_local_gems!
 end
