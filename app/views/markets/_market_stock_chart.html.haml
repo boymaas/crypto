@@ -34,6 +34,24 @@
         yAxis: 1
 
       $("#market_chart").highcharts "StockChart",
+        chart:
+          events:
+            load: (e) ->
+              if $.cookie('market_chart_extremes_min')?
+                min = parseInt($.cookie('market_chart_extremes_min'))
+                max = parseInt($.cookie('market_chart_extremes_max'))
+                this.xAxis[0].setExtremes(new Date(min), new Date(max))
+
+        xAxis:
+          events:
+            setExtremes: (e) ->
+              if e.trigger?
+                $.cookie 'market_chart_extremes_min', e.min
+                $.cookie 'market_chart_extremes_max', e.max
+
+        rangeSelector:
+          selected: 1
+
         rangeSelector:
           selected: 3
           buttons: [
