@@ -15,10 +15,11 @@ class MarketsController < SecuredController
     data = @market.trade_stats_dataset.order(:rounded_date).all
 
     advisor = CryptoTrader::Bot::Advisor::MacdSignalCross.new
-    sig_ema_crossing = CryptoTrader::Bot::Signal::EmaCrossing.new
 
     # NOTE: running advisor on all snapshots
     snapshots = CryptoTrader::Snapshots.new(@market)
+    snapshots = CryptoTrader::CachedSnapshots.new(snapshots)
+
     data_points = snapshots.market_trade_stats
     data_points_price_avg = data_points.map {|e| e[1][:price_avg] }
 
@@ -31,10 +32,9 @@ class MarketsController < SecuredController
       _, bidx = advisor.run_on(snapshot)
 
       signals = advisor.signals.map do |name, signal|
-        [name, signal.run_on(snapshot).to_f]
+        [name.to_s.camelcase, signal.run_on(snapshot).to_f]
       end
 
-      ema_crossing = sig_ema_crossing.run_on(snapshot)
       [timestamp * 1000, mts[:price_avg].to_f, mts[:total_sum].to_f, emas.to_f, emal.to_f, bidx, signals]
     end
 
