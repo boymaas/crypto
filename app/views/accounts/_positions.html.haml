@@ -24,7 +24,7 @@
       %td.text-right{:'class' => (position.potential_profit >= 0.0) ? 'success' : 'danger'}
         = "%.2f%%" % position.potential_profit_perc
 
-    - position.trades_to_reach_balance.reverse.each do |trade|
+    - position.trades_to_reach_balance.reverse.take(5).each do |trade|
       - next if trade.is_a?  CryptoTrader::TradeStub
       %tr.target{class: "position_trades_#{position.currency_code}"}
         %td{:style => 'background: none'}
@@ -37,6 +37,14 @@
         %td.text-right{:colspan => 2}
           %time.has-tooltip{:'data-toggle'=> 'tooltip', :'data-placement' => 'auto', :'data-original-title' => "#{ time_ago_in_words(trade.timestamp.in_time_zone('UTC')) } ago"}
             = trade.timestamp.in_time_zone('UTC')
+    - trades_left = position.trades_to_reach_balance.reverse.count - 5
+    - if trades_left > 0
+      %tr.target{class: "position_trades_#{position.currency_code}"}
+        %td{:style => 'background: none'}
+        %td{colspan: 7}
+          %center
+            .text-muted
+              ( And another #{trades_left} trades not shown )
 
 :coffee
   class Positions

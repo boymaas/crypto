@@ -9,7 +9,7 @@
             = @market_state.timestamp.utc.iso8601
   .col-lg-3
     - if @desired_portfolio.include?(@market)
-      %a.btn.btn-default.pull-right{:href => account_path}
+      %a.btn.btn-success.pull-right{:href => account_path}
         Desired market
     - else
       = form_tag(account_desired_portfolio_items_path) do 

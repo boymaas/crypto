@@ -1,11 +1,12 @@
-%table.table.table-striped
+%table.table.table-striped.table-condensed
   %thead
     %tr
       %th Quantity
-      %th Price
-      %th Total
+      %th.text-right Price
+      %th.text-right Total
   - orders.each do |o|
+    - next if o.quantity <= 0.0
     %tr
-      %td= "%.8f" % o.quantity
-      %td= "%.8f" % o.price
-      %td= "%.8f" % ( o.price * o.quantity )
+      %td.text-right= quantity o.quantity
+      %td.text-right= bitcoin o.price
+      %td.text-right= bitcoin ( o.price * o.quantity )
