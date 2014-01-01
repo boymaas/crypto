@@ -6,9 +6,9 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for( resource )
     case resource
     when User
-      account_path(resource)
+      account_path
     when Admin
-      accounts_path
+      url_for :controller => :accounts, :action => :index
     end
   end
 end

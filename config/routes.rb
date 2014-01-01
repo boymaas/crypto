@@ -4,12 +4,16 @@ Crypto::Application.routes.draw do
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
   #
-  resources :accounts do
+  resource :account do
     member do
       get :become
     end
-    
+    resource :desired_portfolio do
+      resources :desired_portfolio_items, :as => :items do
+      end
+    end
   end
+  # get 'accounts' => 'accounts#index', :as => :accounts
 
   resources :markets do
     member do

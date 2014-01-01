@@ -59,12 +59,12 @@
         - if admin_signed_in?
           .collapse.navbar-collapse.navbar-left
             %ul.nav.navbar-nav
-              %li= link_to "Accounts", accounts_path
+              %li= link_to "Accounts", :controller => :accounts, :action => :index
 
         - if user_signed_in?
           .collapse.navbar-collapse.navbar-left
             %ul.nav.navbar-nav
-              %li= link_to "Position", account_path(current_user.id)
+              %li= link_to "Position", account_path
               -# %li= link_to "Link2", "/path2"  
               -# %li= link_to "Link3", "/path3"  
 

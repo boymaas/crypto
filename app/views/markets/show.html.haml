@@ -1,10 +1,21 @@
-%h2
-  = @market.label
-  .small
-    MS #{ @market_state.timestamp.utc } 
-    = surround '(', ')' do
-      %time.timeago{:datetime => @market_state.timestamp.utc.iso8601}><
-        = @market_state.timestamp.utc.iso8601
+.row
+  .col-lg-9
+    %h2
+      = @market.label
+      .small
+        MS #{ @market_state.timestamp.utc } 
+        = surround '(', ')' do
+          %time.timeago{:datetime => @market_state.timestamp.utc.iso8601}><
+            = @market_state.timestamp.utc.iso8601
+  .col-lg-3
+    - if @desired_portfolio.include?(@market)
+      %a.btn.btn-default.pull-right{:href => account_path}
+        Desired market
+    - else
+      = form_tag(account_desired_portfolio_items_path) do 
+        %input{:type => 'hidden', :name => 'market_id', :value => @market.id }
+        %button.btn.btn-default.pull-right
+          Add to desired portfolio
 
 = render 'market_stock_chart'
 

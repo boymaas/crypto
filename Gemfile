@@ -18,6 +18,9 @@ else
   gem 'crypto_trader', :git => 'git@github.com:boymaas/crypto_trader.git', :branch => :master
 end
 
+# asset gems
+gem 'bootstrap-slider-rails'
+
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 gem 'sequel'

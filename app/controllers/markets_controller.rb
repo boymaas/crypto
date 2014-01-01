@@ -1,5 +1,8 @@
 class MarketsController < SecuredController
   def show
+    @account = current_user.crypto_trader_account
+    @desired_portfolio = CryptoTrader::Runner::DesiredPortfolio.new(@account)
+
     @market = CryptoTrader::Model::Market.find(:id => params.fetch(:id))  
     @accounts = CryptoTrader::Model::Account.all
     @analyzed_market = CryptoTrader::AnalyzedMarket.new(@market)

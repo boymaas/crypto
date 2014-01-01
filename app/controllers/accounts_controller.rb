@@ -21,6 +21,8 @@ class AccountsController < ApplicationController
       reverse_order(:id).
       limit(10)
 
+    @desired_portfolio = CryptoTrader::Runner::DesiredPortfolio.new(@account)
+
     @account_trades = @account.trades_dataset.reverse_order(:timestamp).limit(10)
   end
 

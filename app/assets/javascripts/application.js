@@ -17,6 +17,7 @@
 //= require twitter/bootstrap
 //= require turbolinks
 //= require bootstrap
+//= require bootstrap-slider
 //= require timeago
 //
 //
