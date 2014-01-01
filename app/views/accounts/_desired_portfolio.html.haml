@@ -1,0 +1,232 @@
+#desired-portfolio
+  %table.table
+    %thead
+      %tr
+        %th{:colspan=>2} 
+        %th.text-right %
+    %tbody
+      %tr
+        %td.text-left BTC
+        %td.text-right 
+          -# %input.slider{:'data-desired-portfolio' => 'percentage-in-btc',
+          -# :'data-value-id' => '#value-percentage-in-btc',
+          -# :'data-slider-value' => '80' }
+        %td.text-right
+          #value-percentage-in-btc
+            = "%.0f" % desired_portfolio.unallocated_percentage
+
+      - desired_portfolio.items_without_trending_market_managed.all.each do |item|
+            
+        %tr
+          %td.text-left
+            = link_to content_tag(:i, "", class: "icon-trash icon-white"), account_desired_portfolio_item_path(item.id), method: :delete
+            = item.market.label 
+          %td.text-right 
+            %input.slider{:'data-desired-portfolio-item-id' => item.id,
+            :'data-type' => 'item',
+            :'data-value-id' => "#value_#{item.id}",
+            :'data-slider-value' => item.percentage_of_portfolio}
+          %td.text-right
+            %div{:id => "value_#{item.id}"}
+              = "%.0f" % item.percentage_of_portfolio
+
+      %tr
+        %td{:colspan=>3}
+          %center.small.text-muted
+            Below is the selection of trending markets by the system. Our trading bots will monitor these markets and invest
+            the percentage you have selected in trending markets. The most trending market will receive the most funds
+
+      %tr
+        %td.text-left Trending markets
+        %td.text-right 
+          %input.slider{:'data-type' => 'percentage_in_trending_markets',
+            :'data-value-id' => '#value-trending-markets',
+            :'data-slider-value' => desired_portfolio.percentage_in_trending_markets }
+        %td.text-right
+          #value-trending-markets
+            = "%.0f" % desired_portfolio.percentage_in_trending_markets
+
+      - desired_portfolio.items_trending_market_managed.all.each do |item|
+        %tr
+          %td.text-left
+            = link_to content_tag(:i, "", class: "icon-trash icon-white"), account_desired_portfolio_item_path(item.id), method: :delete
+            = item.market.label 
+          %td.text-right 
+            -# %input.slider{:'data-desired-portfolio-item-id' => item.id,
+            -# :'data-type' => 'item',
+            -# :'data-value-id' => "#value_#{item.id}",
+            -# :'data-slider-value' => item.percentage_of_portfolio}
+          %td.text-right
+            %div{:id => "value_#{item.id}"}
+              = "%.0f" % item.percentage_of_portfolio
+
+
+  %center.small.text-muted
+    Compose your ideal portfolio by dragging the sliders and pressing save. Our bots will start buying the selected currencies on your configured markets when
+    they notice a positive trend on the market.
+
+  %div
+    %a.btn.btn-default.pull-right.save
+      Saved
+
+.row
+
+:sass
+  .slider
+    width: 400px
+    .slider-selection 
+      background: #BABABA
+
+:coffee
+  # dynamic sliders to change percentage of portfolio
+  # when on slider updates, update the rest in ratio
+  # when one slider increases the rest should decrease
+  # and visa versa
+
+  # sum all sliders should always be 100
+  # last ratio should be remembered.
+
+  # we make an object desired portfolio
+
+  # DOC: http://seiyria.github.io/bootstrap-slider/
+  $ ->
+    class DesiredPortfolio
+      constructor: (@id) ->
+        @sliders = []
+        @activate()
+
+      container: ->
+        $(@id)
+
+      activate: ->
+        @find_sliders().each =>
+          @sliders.push `$(this)`
+          `$(this)`.slider
+            min: 0
+            max: 100
+            tooltip: 'none'
+
+          `$(this)`.on 'slide', (e) =>
+            @ev_slider_slide(`$(this)`, e.value, e)
+
+        @save_button().on 'click', =>
+          @save(`$(this)`)
+
+        @save_button_disable()
+
+      save_button: ->
+        @container().find('.save')
+
+      save_button_text: (text) ->
+        @save_button().text text
+
+      save_button_add_class: (_class) ->
+        @save_button().addClass _class
+      save_button_rem_class: (_class) ->
+        @save_button().removeClass _class
+
+      save_button_disable: ->
+        @save_button().attr('disabled', true)
+      save_button_enable: ->
+        @save_button().removeAttr('disabled')
+
+      save: (button) ->
+
+        data = {}
+        percentage_in_trending_markets = 0.0
+
+        $.each @sliders, (i, e) =>
+          switch e.data('type')
+            when 'item' 
+              item_id = e.data('desired-portfolio-item-id')
+              percentage = e.slider('getValue')
+              data["item_\#{item_id}"] = percentage
+            when 'percentage_in_trending_markets' 
+              data['percentage_in_trending_markets'] = e.slider('getValue')
+
+        @save_button_text "Saving ..."
+        @save_button_add_class 'btn-alert'
+        @save_button_disable()
+
+        wrapper = (f) =>
+          f()
+          @save_button_rem_class 'btn-alert'
+
+        $.ajax
+          url: '/account/desired_portfolio.json'
+          type: 'PUT'
+          success: (resp) =>
+            wrapper =>
+              @save_success(resp, button)
+          error: (resp) => 
+            wrapper =>
+              @save_error(resp, button)
+          dataType: 'json'
+          data: data
+
+      timeout: (t,f) ->
+        setTimeout f, t
+
+      save_success: (_, button) ->
+        @save_button_text "Saved!"
+        @save_button_add_class "btn-success"
+        @timeout 1000, =>
+          @save_button_text "Saved"
+          @save_button_rem_class "btn-success"
+          @save_button_rem_class "btn-primary"
+        
+      save_error: (_, button) ->
+        @save_button_text "Problem saving!"
+        @save_button_add_class "btn-error"
+        @timeout 1000, =>
+          @save_button_text "Try again"
+          @save_button_rem_class "btn-error"
+          @save_button_rem_class "btn-primary"
+          @save_button_enable()
+        
+        
+
+      all_sliders_sum: ->
+        sum = 0
+        $.each @sliders, (i, e) =>
+          sum += e.slider('getValue')
+        sum
+
+      all_sliders_sum_except: (e) ->
+        @all_sliders_sum() - e.slider('getValue')
+
+      deduct_proportional: (v, slider) ->
+        total = @all_sliders_sum_except(slider)
+        ratio = v / total
+
+        $.each @sliders, (i, e) ->
+          unless e.is slider
+            cv = e.slider('getValue')
+            nv = cv - ( cv * ratio )
+            e.slider('setValue', nv)
+
+            value_id = e.data('value-id')
+            $(value_id).text parseInt( nv )
+        
+
+          
+      ev_slider_slide: (sl, v, e) ->
+        value_id = sl.data('value-id')
+        $(value_id).text v
+
+        @save_button_add_class 'btn-primary'
+        @save_button_enable()
+        @save_button_text('Save')
+
+        if @all_sliders_sum() > 100
+          @deduct_proportional(@all_sliders_sum() - 100, sl)
+        $('#value-percentage-in-btc').text parseInt( 100 - @all_sliders_sum() )
+        
+      find_sliders: ->
+        @container().find('.slider')
+
+      desired_portfolio = new DesiredPortfolio('#desired-portfolio')
+      
+  # $('#slider_mec').slider
+  #   min: 0
+  #   max: 100

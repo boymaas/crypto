@@ -1,32 +1,92 @@
 %table#positions.table.table-small.table-hover
   %thead
     %th Currency
-    %th Quantity
-    %th LTP
-    %th ATP@10
-    %th Base price
-    %th Investment
-    %th{:colspan=>2} Potential Profit (%)
+    %th.text-right Quantity
+    %th.text-right LTP
+    %th.text-right ATP@10
+    %th.text-right Base price
+    %th.text-right Investment
+    %th.text-right{:colspan=>2} Potential Profit (%)
 
   - positions = positions.sort_by {|p| -1*p.investment }
   - positions.each_with_index do |position, i|
     - next if position.currency_code == 'Points'
-    %tr{:'data-toggle' => 'collapse', 
-        :'data-target' => "#position_trades_#{position.currency_code}",
-        :'data-parent' => "#positions",
-        :'class' => (position.potential_profit >= 0.0) ? 'success' : 'danger'}
+    %tr{:'data-toggle' => 'collapse-rows', 
+        :'data-target' => ".position_trades_#{position.currency_code}",
+        :'data-parent' => "#positions"}
       %td= position.currency_code
-      %td= "%.8f" % position.quantity
-      %td= "%.8f" % position.last_trade_price
-      %td= "%.8f" % position.avg_trading_price
-      %td= "%.8f" % position.base_price
-      %td= "%.8f" % position.investment
-      %td= "%.8f" % position.potential_profit 
-      %td= "%.2f%%" % position.potential_profit_perc
+      %td.text-right= quantity position.quantity
+      %td.text-right= bitcoin position.last_trade_price
+      %td.text-right= bitcoin position.avg_trading_price
+      %td.text-right= bitcoin position.base_price
+      %td.text-right= bitcoin position.investment
+      %td.text-right= bitcoin position.potential_profit 
+      %td.text-right{:'class' => (position.potential_profit >= 0.0) ? 'success' : 'danger'}
+        = "%.2f%%" % position.potential_profit_perc
 
-    %tr
-      %td{colspan: 8}
-        .collapse{:id => "position_trades_#{position.currency_code}"}
-          = render 'shared/account_trades',
-            :account_trades => position.trades_to_reach_balance.reverse,
-            :no_thead => false
+    - position.trades_to_reach_balance.reverse.each do |trade|
+      - next if trade.is_a?  CryptoTrader::TradeStub
+      %tr.target{class: "position_trades_#{position.currency_code}"}
+        %td{:style => 'background: none'}
+        %td.text-right= quantity trade.quantity
+        %td.text-right= trade.type == 'buy' ? 'Bought' : 'Sold'
+        %td
+        %td.text-right= bitcoin trade.price
+        %td.text-right= bitcoin trade.total
+        -# %td.text-right= bitcoin trade.fee
+        %td.text-right{:colspan => 2}
+          %time.has-tooltip{:'data-toggle'=> 'tooltip', :'data-placement' => 'auto', :'data-original-title' => "#{ time_ago_in_words(trade.timestamp.in_time_zone('UTC')) } ago"}
+            = trade.timestamp.in_time_zone('UTC')
+
+:coffee
+  class Positions
+    constructor: (@id) ->
+      @container = $(@id)
+      @hide_all_targets()
+      @install_events()
+
+    parent_rows: ->
+      @container.find('[data-toggle="collapse-rows"]')
+
+    target_rows: ->
+      @parent_rows().map (_, parent) =>
+        @find_target($(parent))
+
+    hide_all_targets: ->
+      @target_rows().each (_, row) =>
+        @hide_row($(row))
+
+    find_target: (parent) ->
+      selector = parent.data('target')
+      @container.find(selector)
+
+    toggle_row: (row) ->
+      row.toggle("fast")
+
+    hide_row: (row) ->
+      row.fadeOut(500)
+      row.data('toggle', false)
+      
+    show_row: (row) ->
+      row.fadeIn(500)
+      row.data('toggle', true)
+
+    install_toggle_collapse_event: (e) ->
+      target = @find_target(e)
+      e.on 'click', (e) =>
+        @toggle_row(target)
+
+    install_events: ->
+      @parent_rows().each (_, e) =>
+        @install_toggle_collapse_event($(e))
+
+  positions = new Positions('#positions')
+
+
+:sass
+  #positions
+    tr.target
+      display: none
+      td
+        background: #eee
+        border-top: 0px
