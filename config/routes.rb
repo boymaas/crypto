@@ -5,15 +5,13 @@ Crypto::Application.routes.draw do
   # See how all your routes lay out with "rake routes".
   #
   resource :account do
-    member do
-      get :become
-    end
     resource :desired_portfolio do
       resources :desired_portfolio_items, :as => :items do
       end
     end
   end
   get 'accounts' => 'accounts#index', :as => :accounts_index
+  get 'account/become/:id' => 'accounts#become', :as => :become_account
 
   resources :markets do
     member do
