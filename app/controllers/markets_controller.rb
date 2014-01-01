@@ -4,7 +4,6 @@ class MarketsController < SecuredController
     @desired_portfolio = CryptoTrader::Runner::DesiredPortfolio.new(@account)
 
     @market = CryptoTrader::Model::Market.find(:id => params.fetch(:id))  
-    @accounts = CryptoTrader::Model::Account.all
     @analyzed_market = CryptoTrader::AnalyzedMarket.new(@market)
     @market_state = @analyzed_market.market_state
     @buy_orders = @market_state.buy_orders_dataset.reverse_order(:price).all

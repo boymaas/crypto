@@ -75,7 +75,7 @@ group :development, :test do
   gem 'require_reloader'
   gem 'html2haml'
   gem 'rspec-rails'
-  gem 'debugger'
+  gem 'byebug'
   gem 'pry'
 end
 # gem 'debugger', group: [:development, :test]
