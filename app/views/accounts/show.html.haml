@@ -3,8 +3,16 @@
 
 = render 'desired_portfolio', :desired_portfolio => @desired_portfolio
 
-%h4 
-  Actual Position
+.row
+  .col-lg-8
+    %h4 
+      Actual Position
+  .col-lg-4
+    %h4
+      .text-right
+        PV
+        = bitcoin @portfolio.value_in_secondary_currency('BTC')
+        BTC
 
 = cache(['positions', @last_data_collector_run, (current_user && current_user.id), ( current_admin && current_admin.id )]) do
   = render 'positions', :positions => @portfolio.positions
