@@ -60,16 +60,18 @@
             %div{:id => "value_#{item.id}"}
               = "%.0f" % item.percentage_of_portfolio
 
-
-  %center.small.text-muted
-    Compose your ideal portfolio by dragging the sliders and pressing save. Our bots will start buying the selected currencies on your configured markets when
-    they notice a positive trend on the market.
-
   %div
     %a.btn.btn-default.pull-right.save
       Saved
 
-.row
+  .row
+
+  %p
+    %center.small.text-muted
+      Compose your ideal portfolio by dragging the sliders and pressing save. Our bots will start buying the selected currencies on your configured markets when
+      they notice a positive trend on the market.
+
+
 
 :sass
   .slider

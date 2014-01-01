@@ -6,11 +6,13 @@
     %th.text-right ATP@10
     %th.text-right Base price
     %th.text-right Investment
-    %th.text-right{:colspan=>2} Potential Profit (%)
+    %th.text-right AP
+    %th.text-right PP
 
   - positions = positions.sort_by {|p| -1*p.investment }
   - positions.each_with_index do |position, i|
     - next if position.currency_code == 'Points'
+    - next if position.quantity <= 1e-8
     %tr{:'data-toggle' => 'collapse-rows', 
         :'data-target' => ".position_trades_#{position.currency_code}",
         :'data-parent' => "#positions"}

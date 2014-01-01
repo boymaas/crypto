@@ -1,18 +1,26 @@
 module ApplicationHelper
   def bitcoin n
     number = n
-    unit = 'B'
-    precision = 2
-    if n < 1e-3
-      number *= 1e8
-      precision = 0
-      unit = 'e-8'
-    elsif n < 1e-0
+    unit = 'e-0'
+    precision = 8
+    # if n < 1e-6
+    #   number *= 1e9
+    #   precision = 0
+    #   unit = 'e-9'
+    # elsif n < 1e-3
+    #   number *= 1e6
+    #   precision = 2
+    #   unit = 'e-6'
+    if n < 1e0
       number *= 1e3
-      unit = 'e-3'
+      precision = 5
+      unit = 'mB'
     end
     number = number_to_currency number, precision: precision, :unit => ''
-    "%s<sup class='text-muted'>%s</sup>".html_safe % [number, unit]
+    n,d = number.split('.')
+    d ||= ""
+    d += "0" * ( precision - d.length )
+    "%d<span class='text-muted'>.%s</span>%s".html_safe % [n.to_i, d, unit]
   end
 
   def quantity n
