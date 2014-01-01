@@ -13,7 +13,7 @@ Crypto::Application.routes.draw do
       end
     end
   end
-  # get 'accounts' => 'accounts#index', :as => :accounts
+  get 'accounts' => 'accounts#index', :as => :accounts_index
 
   resources :markets do
     member do

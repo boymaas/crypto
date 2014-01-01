@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
     when User
       account_path
     when Admin
-      url_for :controller => :accounts, :action => :index
+      accounts_index_path
     end
   end
 end

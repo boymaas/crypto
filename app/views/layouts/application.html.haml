@@ -59,7 +59,7 @@
         - if admin_signed_in?
           .collapse.navbar-collapse.navbar-left
             %ul.nav.navbar-nav
-              %li= link_to "Accounts", :controller => :accounts, :action => :index
+              %li= link_to "Accounts", accounts_index_path
 
         - if user_signed_in?
           .collapse.navbar-collapse.navbar-left
