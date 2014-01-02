@@ -23,7 +23,7 @@
       %td.text-right= bitcoin position.base_price
       %td.text-right= bitcoin position.investment
       %td.text-right= bitcoin position.potential_profit 
-      %td.text-right{:'class' => (position.potential_profit >= 0.0) ? 'success' : 'danger'}
+      %td.text-right{:'class' => (position.potential_profit_perc >= 0.0) ? 'success' : 'danger'}
         = "%.2f%%" % position.potential_profit_perc
 
     - position.trades_to_reach_balance.reverse.take(5).each do |trade|

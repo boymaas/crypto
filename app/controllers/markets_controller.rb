@@ -6,6 +6,7 @@ class MarketsController < SecuredController
     @market = CryptoTrader::Model::Market.find(:id => params.fetch(:id))  
     @analyzed_market = CryptoTrader::AnalyzedMarket.new(@market)
     @market_state = @analyzed_market.market_state
+    @orderbook = @analyzed_market.orderbook
     @buy_orders = @market_state.buy_orders_dataset.reverse_order(:price).all
     @sell_orders = @market_state.sell_orders_dataset.order(:price).all
   end
