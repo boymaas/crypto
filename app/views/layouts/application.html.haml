@@ -106,27 +106,12 @@
         .col-lg-3
 
           %h4 Trending markets
-          .row
-            - markets = CryptoTrader::Model::Market.where(:secondary_currency_code => 'BTC').reverse_order(:investability).limit(12).all
-            - markets.each_slice(markets.count / 3) do |mpart|
-              .col-lg-4
-                %ul.nav.nav-pills
-                  - mpart.each do |m|
-                    %li
-                      = link_to m.label, market_path(m.id)
+          - cache :trending_markets_list, :expires => 5.minutes do
+            = render :partial => 'shared/trending_market_list'
 
           %h4 Btc markets
-          .row
-            - markets = CryptoTrader::Model::Market.where(:secondary_currency_code => 'BTC').order(:primary_currency_code).all
-            - markets.each_slice(markets.count / 3) do |mpart|
-              .col-lg-4
-                %ul.nav.nav-pills
-                  - mpart.each do |m|
-                    %li
-                      = link_to m.label, market_path(m.id)
-          / /.well
-        / /span
-      / /row
+          - cache :shared_market_list, :expires => 15.minutes do
+            = render :partial => 'shared/market_list'
 
       -# NOTE: this must be here, otherwise ago doesn't take ..
       :coffee

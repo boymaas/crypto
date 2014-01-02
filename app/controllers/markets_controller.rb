@@ -13,31 +13,30 @@ class MarketsController < SecuredController
   def data
     @market = CryptoTrader::Model::Market.find(:id => params.fetch(:id))  
 
-
-    data = @market.trade_stats_dataset.order(:rounded_date).all
-
     advisor = CryptoTrader::Bot::Advisor::MacdSignalCross.new
 
-    # NOTE: running advisor on all snapshots
-    snapshots = CryptoTrader::Snapshots.new(@market)
-    snapshots = CryptoTrader::CachedSnapshots.new(snapshots)
+    data = cache [:market_chart_data, system_info.last_data_collector_run.id] do
+      # NOTE: running advisor on all snapshots
+      snapshots = CryptoTrader::Snapshots.new(@market)
+      snapshots = CryptoTrader::CachedSnapshots.new(snapshots)
 
-    data_points = snapshots.market_trade_stats
-    data_points_price_avg = data_points.map {|e| e[1][:price_avg] }
+      data_points = snapshots.market_trade_stats
+      data_points_price_avg = data_points.map {|e| e[1][:price_avg] }
 
-    ema_short   = data_points_price_avg.indicator(:ema, advisor.conf[:short])
-    ema_long    = data_points_price_avg.indicator(:ema, advisor.conf[:long])
-    data_points = data_points.zip(ema_short.zip(ema_long)).flatten.each_slice(4).to_a
+      ema_short   = data_points_price_avg.indicator(:ema, advisor.conf[:short])
+      ema_long    = data_points_price_avg.indicator(:ema, advisor.conf[:long])
+      data_points = data_points.zip(ema_short.zip(ema_long)).flatten.each_slice(4).to_a
 
-    data = data_points.map do |timestamp, mts, emas, emal|
-      snapshot = snapshots.at(timestamp)
-      _, bidx = advisor.run_on(snapshot)
+      data = data_points.map do |timestamp, mts, emas, emal|
+        snapshot = snapshots.at(timestamp)
+        _, bidx = advisor.run_on(snapshot)
 
-      signals = advisor.signals.map do |name, signal|
-        [name.to_s.camelcase, signal.run_on(snapshot).to_f]
+        signals = advisor.signals.map do |name, signal|
+          [name.to_s.camelcase, signal.run_on(snapshot).to_f]
+        end
+
+        [timestamp * 1000, mts[:price_avg].to_f, mts[:total_sum].to_f, emas.to_f, emal.to_f, bidx, signals]
       end
-
-      [timestamp * 1000, mts[:price_avg].to_f, mts[:total_sum].to_f, emas.to_f, emal.to_f, bidx, signals]
     end
 
 

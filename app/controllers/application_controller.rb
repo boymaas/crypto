@@ -11,4 +11,23 @@ class ApplicationController < ActionController::Base
       accounts_index_path
     end
   end
+
+  # TODO: place in own class
+  class SystemInfo
+    def last_data_collector_run
+      CryptoTrader::Model::DataCollectorRun.reverse_order(:id).first
+    end
+
+    def last_bot_run(account=nil)
+      if account
+        account.bot_runs_dataset.reverse_order(:id).first
+      else
+        CryptoTrader::Model::BotRun.reverse_order(:id).first
+      end
+    end
+  end
+
+  def system_info
+    SystemInfo.new
+  end
 end
