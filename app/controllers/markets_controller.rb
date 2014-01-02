@@ -15,7 +15,7 @@ class MarketsController < SecuredController
 
     advisor = CryptoTrader::Bot::Advisor::MacdSignalCross.new
 
-    data = cache [:market_chart_data, system_info.last_data_collector_run.id] do
+    data = cache [:market_chart_data, system_info.last_data_collector_run.id, @market.id] do
       # NOTE: running advisor on all snapshots
       snapshots = CryptoTrader::Snapshots.new(@market)
       snapshots = CryptoTrader::CachedSnapshots.new(snapshots)

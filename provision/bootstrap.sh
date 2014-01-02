@@ -28,6 +28,7 @@ install redis-server
 
 # Install database
 postgresql_install
+postgresql_shmmax
 
 # Provision the different user accounts
 . provision/user-vagrant.sh

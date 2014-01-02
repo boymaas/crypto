@@ -27,6 +27,30 @@ service postgresql restart
 echo "End PostgreSQL"
 }
 
+postgresql_shmmax() {
+# -- Dedicated server 8GB RAM
+# shared_buffers = 1/3 .. 1/4 dedicated RAM
+# effecttive_cache_size = 2/3 dedicated RAM
+
+# maintenance_work_mem > higher than the most big table (if possible) 
+#                       else 1/10 RAM 
+#                       else max_connection * 1/4 * work_mem
+
+# work_mem  = precious setting is based on slow query analyse 
+#             (first setting about 100MB)
+
+# --must be true
+# max_connection * work_mem * 2 + shared_buffers 
+#           + 1GB (O.S.) + 1GB (filesystem cache) <= RAM size
+  page_size=`getconf PAGE_SIZE`
+  phys_pages=`getconf _PHYS_PAGES`
+  shmall=`expr $phys_pages / 2`
+  shmmax=`expr $shmall \* $page_size`
+  echo kernel.shmmax = $shmmax >>/etc/sysctl.conf
+  echo kernel.shmall = $shmall >>/etc/sysctl.conf
+  sysctl -p
+}
+
 
 postgresql_create_database_and_role() {
   # echo "Creating role and database"
@@ -35,5 +59,6 @@ postgresql_create_database_and_role() {
   sudo -u postgres psql -c "grant all on database $1 to $1;"
 }
 
+export -f postgresql_shmmax
 export -f postgresql_install
 export -f postgresql_create_database_and_role
