@@ -38,7 +38,7 @@ class ApplicationController < ActionController::Base
           on bra.market_id = m.id
           where account_id = ?
           order by bra.timestamp desc
-          limit 100
+          limit 40
       sql
     end
     def account_trades account
@@ -49,7 +49,7 @@ class ApplicationController < ActionController::Base
           on at.market_id = m.id
           where at.account_id = ?
           order by at.timestamp desc
-          limit 100
+          limit 40
       sql
     end
     def account_trades_on_market account, market
@@ -61,7 +61,7 @@ class ApplicationController < ActionController::Base
           where at.account_id = ?
             and m.id = ?
           order by at.timestamp desc
-          limit 100
+          limit 40
       sql
     end
   end
