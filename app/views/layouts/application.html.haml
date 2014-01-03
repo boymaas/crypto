@@ -32,19 +32,19 @@
     %script{:src => "http://code.highcharts.com/stock/modules/exporting.js"}
 
 
-  :coffee
-    $ ->
-      reload_navbar_stats = () ->
-        $('#navbar_stats').each () ->
-          navbar_stats_ref = $(this)
-          navbar_stats_ref.fadeOut(200)
-          $.get "/partials/navbar_stats", (data) ->
-            navbar_stats_ref.html data
-            navbar_stats_ref.fadeIn(200)
+    :coffee
+      $ ->
+        reload_navbar_stats = () ->
+          $('#navbar_stats').each () ->
+            navbar_stats_ref = $(this)
+            navbar_stats_ref.fadeOut(200)
+            $.get "/partials/navbar_stats", (data) ->
+              navbar_stats_ref.html data
+              navbar_stats_ref.fadeIn(200)
+
+          setTimeout reload_navbar_stats, 10000
 
         setTimeout reload_navbar_stats, 10000
-
-      setTimeout reload_navbar_stats, 10000
 
   %body
     .navbar.navbar-inverse
