@@ -1,18 +1,9 @@
 GIT
-  remote: git@github.com:boymaas/crypto_trader.git
-  revision: c6d3476a63de218aa5de9aec3c6a6c18c3544db6
-  branch: master
+  remote: git://github.com/rweng/jquery-datatables-rails.git
+  revision: 44b0448193d4856847e47fb2a245bdd51a4bb2fa
   specs:
-    crypto_trader (0.0.1)
-      activesupport (~> 4)
-      colored (= 1.2)
-      cryptsy-api (= 0.0.3)
-      memoist (= 0.9.0)
-      pg (~> 0.17)
-      sequel (~> 4.5)
-      ta-indicator (= 0.1.1)
-      talib_ruby (= 1.0.5)
-      terminal-table (~> 1.4)
+    jquery-datatables-rails (1.12.2)
+      jquery-rails
 
 GIT
   remote: https://github.com/seyhunak/twitter-bootstrap-rails.git
@@ -24,6 +15,20 @@ GIT
       execjs
       rails (>= 3.1)
       railties (>= 3.1)
+
+PATH
+  remote: ../crypto_trader/
+  specs:
+    crypto_trader (0.0.1)
+      activesupport (~> 4)
+      colored (= 1.2)
+      cryptsy-api (= 0.0.3)
+      memoist (= 0.9.0)
+      pg (~> 0.17)
+      sequel (~> 4.5)
+      ta-indicator (= 0.1.1)
+      talib_ruby (= 1.0.5)
+      terminal-table (~> 1.4)
 
 GEM
   remote: https://rubygems.org/
@@ -109,6 +114,9 @@ GEM
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     json (1.8.1)
+    kaminari (0.15.0)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
     less (2.4.0)
       commonjs (~> 0.2.7)
     less-rails (2.4.2)
@@ -246,7 +254,9 @@ DEPENDENCIES
   haml
   html2haml
   jbuilder (~> 1.2)
+  jquery-datatables-rails!
   jquery-rails
+  kaminari
   less-rails
   mina
   pg

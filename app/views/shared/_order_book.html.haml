@@ -1,12 +1,17 @@
-%table.table.table-striped.table-condensed
-  %thead
-    %tr
-      %th Quantity
-      %th.text-right Price
-      %th.text-right Total
-  - orders.each do |o|
-    - next if o.quantity <= 0.0
-    %tr
-      %td.text-right= quantity o.quantity
-      %td.text-right= bitcoin o.price
-      %td.text-right= bitcoin ( o.price * o.quantity )
+.orderbook-window
+  %table.table.table-striped.table-condensed
+    %thead
+      %tr
+        %th Quantity
+        %th.text-right Price
+        -# %th.text-right Total
+        %th.text-right CT
+        %th.text-right CQ
+    - orders.each do |o|
+      -# - next if o.quantity <= 0.0
+      %tr
+        %td.text-right= quantity o.quantity
+        %td.text-right= bitcoin o.price
+        -# %td.text-right= bitcoin ( o.price * o.quantity )
+        %td.text-right= bitcoin o.accumulated_total
+        %td.text-right= quantity o.accumulated_quantity

@@ -31,12 +31,11 @@
     = render 'shared/order_book', :orders => @buy_orders
 
 .row
-
-  %center
-    = link_to 'Browse though historical orderbook states', market_market_states_path(@market.id)
+  %p
+    %center
+      = link_to 'Browse though historical orderbook states', market_market_states_path(@market.id)
 
 - account = current_user.crypto_trader_account
 %h4 Account Trades 
 
-- account_trades = account.trades_dataset.where(:market => @market).reverse_order(:timestamp)
-= render 'shared/account_trades', :account_trades => account_trades
+= render 'shared/account_trades', :account_trades => @account_trades

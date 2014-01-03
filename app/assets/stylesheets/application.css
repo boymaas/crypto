@@ -11,5 +11,9 @@
  *= require_self
  *= require bootstrap_and_overrides
  *= require bootstrap-slider
+ *= require dataTables/jquery.dataTables
+ *= require dataTables/jquery.dataTables.bootstrap3
+ *= require orderbook
  *@ require_tree .
  */
+

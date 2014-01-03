@@ -32,5 +32,8 @@ Crypto::Application.configure do
   # NOTE: disable this again
   config.action_controller.perform_caching = false
 
+  CryptoTrader::DB.loggers << Logger.new(STDOUT)
+
+
   RequireReloader.watch_local_gems!
 end

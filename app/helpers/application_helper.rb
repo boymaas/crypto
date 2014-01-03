@@ -1,8 +1,8 @@
 module ApplicationHelper
   def bitcoin n
     number = n
-    unit = 'e-0'
-    precision = 8
+    unit = 'B'
+    precision = 7
     # if n < 1e-6
     #   number *= 1e9
     #   precision = 0
@@ -24,6 +24,16 @@ module ApplicationHelper
   end
 
   def quantity n
-    number_to_currency n, precision: 2, :unit => ''
+    number_to_currency n, precision: 4, :unit => ''
+  end
+
+  def system_info
+    controller.system_info
+  end
+  def data_provider
+    controller.data_provider
+  end
+  def cache_key_logged_in_users
+    controller.cache_key_logged_in_users
   end
 end

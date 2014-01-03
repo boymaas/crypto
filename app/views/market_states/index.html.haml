@@ -7,4 +7,6 @@
         %td= market_state.timestamp.utc
         %td= link_to 'Show', market_market_state_path(@market.id, market_state.id)
 
+= paginate @market_states
+
 

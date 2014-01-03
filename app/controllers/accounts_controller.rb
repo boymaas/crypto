@@ -15,16 +15,22 @@ class AccountsController < ApplicationController
     account_data_provider = CryptoTrader::AccountDataProvider.new(@account)
     @portfolio = CryptoTrader::Portfolio.new(account_data_provider, market_data_provider)
 
-    @bot_run_actions = CryptoTrader::Model::BotRunAction.
-      select(:bot_run_actions.*).
-      join(:bot_runs, :id => :bot_run_id).
-      where(:account_id => @account.id).
-      reverse_order(:id).
-      limit(10)
+    # @bot_run_actions = CryptoTrader::Model::BotRunAction.
+    #   select(:bot_run_actions.*).
+    #   join(:bot_runs, :id => :bot_run_id).
+    #   where(:account_id => @account.id).
+    #   reverse_order(:id).
+    #   limit(100)
+    @bot_run_actions = data_provider.bot_run_actions(@account)
+      # .paginate(params[:bot_run_actions_page], 10)
 
     @desired_portfolio = CryptoTrader::Runner::DesiredPortfolio.new(@account)
 
-    @account_trades = @account.trades_dataset.reverse_order(:timestamp).limit(10)
+    # @account_trades = @account.trades_dataset.eager(:account, :market).
+    #   reverse_order(:timestamp).
+    #   limit(100)
+    #   # .paginate(params[:account_trades_page], 10)
+    @account_trades = data_provider.account_trades(@account)
   end
 
   def become

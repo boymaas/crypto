@@ -7,11 +7,14 @@ class MarketsController < SecuredController
     @analyzed_market = CryptoTrader::AnalyzedMarket.new(@market)
     @market_state = @analyzed_market.market_state
     @orderbook = @analyzed_market.orderbook
-    @buy_orders = @market_state.buy_orders_dataset.reverse_order(:price).all
-    @sell_orders = @market_state.sell_orders_dataset.order(:price).all
+    @buy_orders = @orderbook.buy_orders_with_accumulated_total(:total, :quantity ).map {|h| OpenStruct.new(h)}
+    @sell_orders = @orderbook.sell_orders_with_accumulated_total(:total, :quantity ).map {|h| OpenStruct.new(h)}
+
+    @account_trades = data_provider.account_trades_on_market @account, @market
   end
 
   def data
+
     @market = CryptoTrader::Model::Market.find(:id => params.fetch(:id))  
 
     advisor = CryptoTrader::Bot::Advisor::MacdSignalCross.new

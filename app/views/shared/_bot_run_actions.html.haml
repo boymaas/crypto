@@ -1,4 +1,4 @@
-%table.table.table-striped.table-condensed
+%table.table.table-striped.table-condensed.datatable
   %thead
     %tr
       %th Timestamp
@@ -18,7 +18,7 @@
         %td
           = bra.type
           order
-        %td= link_to bra.market.label, market_path(bra.market.id)
+        %td= link_to bra.market_label, market_path(bra.market_id)
         %td.text-right= quantity bra.quantity
         %td.text-right= bitcoin bra.price
         %td.text-right= bitcoin ( bra.quantity * bra.price )

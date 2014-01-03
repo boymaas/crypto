@@ -1,5 +1,5 @@
 - no_thead = false unless defined?(no_thead)
-%table.table.table-striped.table-condensed
+%table.table.table-striped.table-condensed.datatable
   - unless no_thead
     %thead
       %tr
@@ -16,8 +16,9 @@
       %tr
         %td= trade.timestamp.in_time_zone('UTC')
         %td= trade.type
-        %td= link_to trade.market.label, market_path(trade.market.id)
+        %td= link_to trade.market_label, market_path(trade.market_id)
         %td.text-right= quantity trade.quantity
         %td.text-right= bitcoin trade.price
         %td.text-right= bitcoin trade.total
         %td.text-right= bitcoin trade.fee
+

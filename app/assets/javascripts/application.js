@@ -19,6 +19,8 @@
 //= require bootstrap
 //= require bootstrap-slider
 //= require timeago
-//
+//= require datatables
 //
 //@ require_tree .
+
+

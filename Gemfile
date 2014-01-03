@@ -25,6 +25,8 @@ gem 'bootstrap-slider-rails'
 gem 'sqlite3'
 gem 'sequel'
 gem 'pg'
+gem 'kaminari'
+gem 'jquery-datatables-rails', git: 'git://github.com/rweng/jquery-datatables-rails.git'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
