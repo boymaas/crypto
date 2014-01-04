@@ -1,5 +1,6 @@
 require 'sequel'
 require 'sequel/extensions/pagination'
+require 'crypto_trader'
 
 module Kaminari
   module Sequel
