@@ -8,7 +8,9 @@ class MarketStatesController < SecuredController
     @market = CryptoTrader::Model::Market.find(:id => params.fetch(:market_id))
     @market_state = CryptoTrader::Model::MarketState.find(:id => params.fetch(:id))
 
-    @buy_orders = @market_state.buy_orders_dataset.reverse_order(:price).all
-    @sell_orders = @market_state.sell_orders_dataset.order(:price).all
+    @orderbook = CryptoTrader::Orderbook.new(@market_state)
+
+    @buy_orders = @orderbook.buy_orders_with_accumulated_total(:total, :quantity ).map {|h| OpenStruct.new(h)}
+    @sell_orders = @orderbook.sell_orders_with_accumulated_total(:total, :quantity ).map {|h| OpenStruct.new(h)}
   end
 end
