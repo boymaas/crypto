@@ -1,7 +1,7 @@
 class MarketStatesController < SecuredController
   def index
     @market = CryptoTrader::Model::Market.find(:id => params.fetch(:market_id))
-    @market_states = @market.states_dataset.reverse_order(:timestamp).extension(:pagination).paginate(params[:page], 20)
+    @market_states = @market.states_dataset.reverse_order(:timestamp).extension(:pagination).paginate(params[:page], 40)
   end
 
   def show
