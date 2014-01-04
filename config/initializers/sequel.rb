@@ -1,6 +1,5 @@
 require 'sequel'
 require 'sequel/extensions/pagination'
-require 'crypto_trader'
 
 module Kaminari
   module Sequel
@@ -29,8 +28,15 @@ module Kaminari
   end
 end
  
-# CryptoTrader::DB.extension :pagination
-Sequel.extension :pagination
 
-CryptoTrader::DB.extension :pagination
 Sequel::Dataset::Pagination.send(:include, Kaminari::Sequel)
+
+# NOTE: loading the extention this way has no effect 
+#       in rails production environment. Do not ask me why? Need to load the extention
+#       manyally on the dataaset ...
+# Sequel.extension :pagination
+# CryptoTrader::DB.extension :pagination
+
+# require 'pry'
+# ::Sequel::DatasetPagination.pry
+# Sequel::Dataset::Pagination.pry

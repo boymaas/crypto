@@ -12,6 +12,15 @@
 # Configure Using Gemfile
 # gem 'pg'
 #
+production: 
+  host: localhost
+  adapter: postgresql
+  encoding: unicode
+  database: crypto_development
+  pool: 5
+  username: crypto
+  password: crypto
+
 development: 
   host: localhost
   adapter: postgresql
