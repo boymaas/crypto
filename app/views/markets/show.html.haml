@@ -39,3 +39,8 @@
 %h4 Account Trades 
 
 = render 'shared/account_trades', :account_trades => @account_trades
+
+.row
+  %p
+    %center
+      = link_to 'Show all market trades', market_market_trades_path(@market.id)

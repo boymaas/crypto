@@ -1,0 +1,2 @@
+module MarketTradesHelper
+end

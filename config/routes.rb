@@ -18,7 +18,8 @@ Crypto::Application.routes.draw do
       get :data
     end
     resources :market_states do
-      
+    end
+    resources :market_trades do
     end
   end
 
