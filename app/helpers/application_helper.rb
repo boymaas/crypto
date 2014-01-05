@@ -23,6 +23,7 @@ module ApplicationHelper
     "%d<span class='text-muted'>.%s</span>%s".html_safe % [n.to_i, d, unit]
   end
 
+  # NOTE: make rounding more intelligent for the eye
   def quantity n
     number_to_currency n, precision: 4, :unit => ''
   end
