@@ -1,5 +1,5 @@
 .row
-  - markets = CryptoTrader::Model::Market.where(:secondary_currency_code => 'BTC').reverse_order(:investability).limit(12).all
+  - markets = CryptoTrader::Model::Market.where(:secondary_currency_code => 'BTC').where('investability > 0.0').reverse_order(:investability).limit(12).all
   - markets.each_slice(markets.count / 3) do |mpart|
     .col-lg-4
       %ul.nav.nav-pills
