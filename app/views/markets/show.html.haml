@@ -19,6 +19,11 @@
 
 = render 'market_stock_chart'
 
+%h4 Last bot run actions
+
+= render 'shared/bot_run_actions', :bot_run_actions => @account.bot_runs_dataset.last.actions
+
+
 .row
   .col-lg-6
     %h4 Sell orders
