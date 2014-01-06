@@ -20,7 +20,8 @@
 
 %h4 Recent bot actions
 
-= render 'shared/bot_run_actions', :bot_run_actions => @bot_run_actions
+#bot_run_actions.auto-refresh-partial{:'data-partial' => 'bot_run_actions', :'data-frequency' => 10000}
+  = render 'shared/bot_run_actions', :bot_run_actions => @bot_run_actions
 
 -# = paginate @bot_run_actions, param_name: :bot_run_actions_page
         

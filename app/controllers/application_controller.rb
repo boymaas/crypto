@@ -28,7 +28,12 @@ class ApplicationController < ActionController::Base
   end
 
   class DataProvider
-    def bot_run_actions account, market=nil
+    def initialize(controller)
+      @controller = controller
+    end
+    def bot_run_actions opts={}
+      account = opts.fetch :account, current_crypto_trader_account
+      market = opts.fetch :market, nil
       CryptoTrader::DB[<<-sql, account.id].map {|r| OpenStruct.new(r) }
         select bra.*, bra.market_id, m.label as market_label 
           from bot_run_actions bra
@@ -65,10 +70,16 @@ class ApplicationController < ActionController::Base
           limit 40
       sql
     end
+    def current_crypto_trader_account
+      @current_account ||= current_user.crypto_trader_account
+    end
+    def current_user
+      @controller.current_user
+    end
   end
 
   def data_provider
-    @_data_provider ||= DataProvider.new
+    @_data_provider ||= DataProvider.new(self)
   end
 
   def system_info

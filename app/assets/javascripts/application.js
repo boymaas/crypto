@@ -20,6 +20,7 @@
 //= require bootstrap-slider
 //= require timeago
 //= require datatables
+//= require auto-refresh-partial
 //
 //@ require_tree .
 

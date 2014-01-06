@@ -91,7 +91,7 @@
                     %li
                       = link_to 'Admin Logout', destroy_admin_session_path, :method => :delete
 
-        #navbar_stats.navbar-text.navbar-right
+        #navbar_stats.navbar-text.navbar-right.auto-refresh-partial{:'data-partial' => 'navbar_stats', :'data-frequency' => 10000}
           = render 'shared/navbar_stats'
         -# .collapse.navbar-collapse.navbar-right
         -#   %ul.nav.navbar-nav

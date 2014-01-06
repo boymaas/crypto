@@ -21,7 +21,7 @@ class AccountsController < ApplicationController
     #   where(:account_id => @account.id).
     #   reverse_order(:id).
     #   limit(100)
-    @bot_run_actions = data_provider.bot_run_actions(@account)
+    @bot_run_actions = data_provider.bot_run_actions(:account => @account)
       # .paginate(params[:bot_run_actions_page], 10)
 
     @desired_portfolio = CryptoTrader::Runner::DesiredPortfolio.new(@account)

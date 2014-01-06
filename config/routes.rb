@@ -24,6 +24,7 @@ Crypto::Application.routes.draw do
   end
 
   get 'partials/navbar_stats' => 'partials#navbar_stats'
+  get 'partials/bot_run_actions' => 'partials#bot_run_actions'
 
   # You can have the root of your site routed with "root"
   authenticated :user do

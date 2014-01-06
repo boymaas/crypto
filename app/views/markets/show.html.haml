@@ -21,7 +21,8 @@
 
 %h4 Last bot run actions
 
-= render 'shared/bot_run_actions', :bot_run_actions => data_provider.bot_run_actions(@account, @market)
+#bot_run_actions.auto-refresh-partial{:'data-partial' => 'bot_run_actions', :'data-frequency' => 10000}
+  = render 'shared/bot_run_actions', :bot_run_actions => data_provider.bot_run_actions(:account => @account, :market => @market)
 
 
 .row
