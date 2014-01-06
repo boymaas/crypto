@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
   end
 
   class DataProvider
-    def bot_run_actions account
+    def bot_run_actions account, market=nil
       CryptoTrader::DB[<<-sql, account.id].map {|r| OpenStruct.new(r) }
         select bra.*, bra.market_id, m.label as market_label 
           from bot_run_actions bra
@@ -37,6 +37,7 @@ class ApplicationController < ActionController::Base
           inner join markets m
           on bra.market_id = m.id
           where account_id = ?
+          #{market && "and m.id = #{market.id}"}
           order by bra.timestamp desc
           limit 40
       sql

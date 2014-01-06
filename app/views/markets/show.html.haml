@@ -21,7 +21,7 @@
 
 %h4 Last bot run actions
 
-= render 'shared/bot_run_actions', :bot_run_actions => @account.bot_runs_dataset.last.actions
+= render 'shared/bot_run_actions', :bot_run_actions => data_provider.bot_run_actions(@account, @market)
 
 
 .row
