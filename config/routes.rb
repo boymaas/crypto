@@ -23,6 +23,10 @@ Crypto::Application.routes.draw do
     end
   end
 
+  resource :backtracker do
+    
+  end
+
   get 'partials/navbar_stats' => 'partials#navbar_stats'
   get 'partials/bot_run_actions' => 'partials#bot_run_actions'
   get 'partials/account_trades' => 'partials#account_trades'

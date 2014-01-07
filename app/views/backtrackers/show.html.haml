@@ -1,0 +1,20 @@
+%h3 Backtracker
+
+= form_tag backtracker_path, :method => :put, :role => :form, :class => 'form-horizontal' do
+  %h4 Advisor
+
+  - @advisor_conf.each do |option, setting| 
+    .form-group
+      %label.col-lg-5{:for => "advisor[#{option}]"}
+        = setting[:desc]
+      %input.col-lg-1{:type => 'text', :name => "advisor[#{option}]", :value => "#{setting[:default]}"}
+  
+  .form-group
+    .col-lg-offset-5.col-lg-2
+      %button.btn.btn-primary.pull-right
+        Run backtest
+
+
+
+%pre
+  = @advisor_conf.to_yaml
