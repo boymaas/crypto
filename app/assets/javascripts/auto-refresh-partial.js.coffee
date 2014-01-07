@@ -16,9 +16,9 @@ $ ->
           params[n.substring(6)] = v
       params
 
-    refresh: (no_update=false) ->
+    refresh_and_start: (no_update=false) ->
       params = $.extend(@params, {cache_id: @cache_id})
-      $.getJSON @url, params, (response) =>
+      $.getJSON(@url, params).done (response) =>
 
         if response['cache_id'] == @cache_id
           return
@@ -32,18 +32,18 @@ $ ->
         @element.fadeOut 500, =>
           @element.html response['data']
           @element.fadeIn 500
+      .always =>
+        @start()
 
     set_timeout: (t,f) ->
       setTimeout(f, t)
 
     fetch_cache_key_and_start: ->
-      @refresh(true)
-      @start()
+      @refresh_and_start(true)
 
     start: ->
       @set_timeout @frequency, =>
-        @refresh()
-        @start()
+        @refresh_and_start(false)
          
 
   $('.auto-refresh-partial').each (_, e) ->
