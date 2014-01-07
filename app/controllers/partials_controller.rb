@@ -61,7 +61,7 @@ class PartialsController < ApplicationController
         portfolio = CryptoTrader::Portfolio.new(account_data_provider, market_data_provider)
 
         render_to_string :partial => 'accounts/positions', :locals => {
-          :positions => portfolio.positions
+          :portfolio => portfolio
         }
       end
     }
