@@ -54,7 +54,7 @@ class PartialsController < ApplicationController
     end
 
     render :json => {
-      :cache_id => cache_key.server_state,
+      :cache_id => cache_key.server_state_for_account,
       :data => cache( [ :accounts_positions, cache_key.server_state_for_account ] ) do
         market_data_provider = CryptoTrader::MarketDataProvider.new()
         account_data_provider = CryptoTrader::AccountDataProvider.new(data_provider.current_crypto_trader_account)
