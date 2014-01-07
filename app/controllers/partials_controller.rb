@@ -17,13 +17,20 @@ class PartialsController < ApplicationController
       return render :json => {:cache_id => cache_key.server_state_for_account}
     end
 
+    bot_run_id = 
+      if params.has_key?(:last_bot_run)
+        system_info.last_bot_run(data_provider.current_crypto_trader_account).id
+      else
+        nil
+      end
+
     market_id = params.fetch(:market_id, nil) 
     market_id &&= market_id.to_i # <== important 
     render :json => {
       :cache_id => cache_key.server_state_for_account,
       :data => cache( [ :bot_run_actions, cache_key.server_state_for_account ] ) do
         render_to_string :partial => 'shared/bot_run_actions', :locals => {
-          :bot_run_actions => data_provider.bot_run_actions(:market_id => market_id)
+          :bot_run_actions => data_provider.bot_run_actions(:market_id => market_id, :bot_run_id => bot_run_id)
         }
       end
     }

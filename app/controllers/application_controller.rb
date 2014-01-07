@@ -34,6 +34,7 @@ class ApplicationController < ActionController::Base
     def bot_run_actions opts={}
       account_id = opts.fetch :account_id, current_crypto_trader_account.id
       market_id = opts.fetch :market_id, nil
+      bot_run_id = opts.fetch :bot_run_id, nil
       CryptoTrader::DB[<<-sql, account_id].map {|r| OpenStruct.new(r) }
         select bra.*, bra.market_id, m.label as market_label 
           from bot_run_actions bra
@@ -43,6 +44,7 @@ class ApplicationController < ActionController::Base
           on bra.market_id = m.id
           where account_id = ?
           #{market_id && "and m.id = #{market_id}"}
+          #{bot_run_id && "and br.id = #{bot_run_id}"}
           order by bra.timestamp desc
           limit 40
       sql

@@ -8,6 +8,13 @@
   = cache([:accounts_positions, cache_key.server_state_for_account]) do
     = render 'positions', :portfolio => @portfolio
 
+%h4 Last bot run actions
+
+#bot_run_actions.auto-refresh-partial{:'data-partial' => 'bot_run_actions',
+  :'data-frequency' => 10000,
+  :'data-param_last_bot_run' => 1}
+  = render 'shared/bot_run_actions', :bot_run_actions => @last_bot_run_actions
+
 %h4 Recent bot actions
 
 #bot_run_actions.auto-refresh-partial{:'data-partial' => 'bot_run_actions', :'data-frequency' => 10000}
