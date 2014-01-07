@@ -20,7 +20,7 @@ module ApplicationHelper
     n,d = number.split('.')
     d ||= ""
     d += "0" * ( precision - d.length )
-    "%d<span class='text-muted'>.%s</span>%s".html_safe % [n.to_i, d, unit]
+    "%s<span class='text-muted'>.%s</span>%s".html_safe % [n, d, unit]
   end
 
   # NOTE: make rounding more intelligent for the eye
