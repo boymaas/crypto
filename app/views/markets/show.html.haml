@@ -21,20 +21,17 @@
 
 %h4 Last bot run actions
 
-#bot_run_actions.auto-refresh-partial{:'data-partial' => 'bot_run_actions', :'data-frequency' => 10000}
-  = render 'shared/bot_run_actions', :bot_run_actions => data_provider.bot_run_actions(:account => @account, :market => @market)
+#bot_run_actions.auto-refresh-partial{:'data-partial' => 'bot_run_actions',
+  :'data-frequency' => 10000,
+  :'data-param_market_id' => @market.id}
+  = render 'shared/bot_run_actions',
+           :bot_run_actions => data_provider.bot_run_actions(:account_id => @account.id, :market_id => @market.id)
 
 
-.row
-  .col-lg-6
-    %h4 Sell orders
-    
-    = render 'shared/order_book', :orders => @sell_orders
-
-  .col-lg-6
-    %h4 Buy orders
-
-    = render 'shared/order_book', :orders => @buy_orders
+#order_books.auto-refresh-partial{:'data-partial' => 'order_books',
+  :'data-frequency' => 10000,
+  :'data-param_market_id' => @market.id}
+  = render 'shared/order_books', :sell_orders => @sell_orders, :buy_orders => @buy_orders
 
 .row
   %p
@@ -44,7 +41,10 @@
 - account = current_user.crypto_trader_account
 %h4 Account Trades 
 
-= render 'shared/account_trades', :account_trades => @account_trades
+#account_trades.auto-refresh-partial{:'data-partial' => 'account_trades',
+  :'data-frequency' => 10000,
+  :'data-param_market_id' => @market.id}
+  = render 'shared/account_trades', :account_trades => @account_trades
 
 .row
   %p

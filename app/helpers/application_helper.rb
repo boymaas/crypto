@@ -34,7 +34,7 @@ module ApplicationHelper
   def data_provider
     controller.data_provider
   end
-  def cache_key_logged_in_users
-    controller.cache_key_logged_in_users
+  def cache_key
+    controller.cache_key
   end
 end

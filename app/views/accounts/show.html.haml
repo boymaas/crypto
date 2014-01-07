@@ -4,19 +4,9 @@
 = render 'desired_portfolio', :desired_portfolio => @desired_portfolio
 
 
-= cache(['positions', system_info.last_bot_run, cache_key_logged_in_users]) do
-  .row
-    .col-lg-8
-      %h4 
-        Actual Position
-    .col-lg-4
-      %h4
-        .text-right
-          PV
-          = bitcoin @portfolio.value_in_secondary_currency('BTC')
-          BTC
-
-  = render 'positions', :positions => @portfolio.positions
+.auto-refresh-partial{:'data-partial' => 'accounts_positions', :'data-frequency' => 10000}
+  = cache([:accounts_positions, cache_key.server_state_for_account]) do
+    = render 'positions', :positions => @portfolio.positions
 
 %h4 Recent bot actions
 
@@ -26,8 +16,9 @@
 -# = paginate @bot_run_actions, param_name: :bot_run_actions_page
         
 
-%h4 Recent bot trades
+%h4 Recent trades
 
-= render 'shared/account_trades', :account_trades => @account_trades
+#account_trades.auto-refresh-partial{:'data-partial' => 'account_trades', :'data-frequency' => 10000}
+  = render 'shared/account_trades', :account_trades => @account_trades
 
 -# = paginate @account_trades, param_name: :account_trades_page

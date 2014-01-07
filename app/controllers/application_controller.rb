@@ -32,9 +32,9 @@ class ApplicationController < ActionController::Base
       @controller = controller
     end
     def bot_run_actions opts={}
-      account = opts.fetch :account, current_crypto_trader_account
-      market = opts.fetch :market, nil
-      CryptoTrader::DB[<<-sql, account.id].map {|r| OpenStruct.new(r) }
+      account_id = opts.fetch :account_id, current_crypto_trader_account.id
+      market_id = opts.fetch :market_id, nil
+      CryptoTrader::DB[<<-sql, account_id].map {|r| OpenStruct.new(r) }
         select bra.*, bra.market_id, m.label as market_label 
           from bot_run_actions bra
           inner join bot_runs br
@@ -42,34 +42,26 @@ class ApplicationController < ActionController::Base
           inner join markets m
           on bra.market_id = m.id
           where account_id = ?
-          #{market && "and m.id = #{market.id}"}
+          #{market_id && "and m.id = #{market_id}"}
           order by bra.timestamp desc
           limit 40
       sql
     end
-    def account_trades account
-      CryptoTrader::DB[<<-sql, account.id].map {|r| OpenStruct.new(r)}
+    def account_trades opts={}
+      account_id = opts.fetch :account_id, current_crypto_trader_account.id
+      market_id = opts.fetch :market_id, nil
+      CryptoTrader::DB[<<-sql, account_id].map {|r| OpenStruct.new(r)}
         select at.*, m.id as market_id, m.label as market_label 
           from account_trades at
           inner join markets m 
           on at.market_id = m.id
           where at.account_id = ?
+          #{market_id && "and m.id = #{market_id}"}
           order by at.timestamp desc
           limit 40
       sql
     end
-    def account_trades_on_market account, market
-      CryptoTrader::DB[<<-sql, account.id, market.id].map {|r| OpenStruct.new(r)}
-        select at.*, m.id as market_id, m.label as market_label 
-          from account_trades at
-          inner join markets m 
-          on at.market_id = m.id
-          where at.account_id = ?
-            and m.id = ?
-          order by at.timestamp desc
-          limit 40
-      sql
-    end
+
     def current_crypto_trader_account
       @current_account ||= current_user.crypto_trader_account
     end
@@ -86,7 +78,33 @@ class ApplicationController < ActionController::Base
     @_system_info ||= SystemInfo.new
   end
 
-  def cache_key_logged_in_users
-    [ (current_user && current_user.id), ( current_admin && current_admin.id ) ]
+  class CacheKeys
+    def initialize controller
+      @controller = controller
+      @system_info = controller.system_info
+    end
+
+    def logged_in_users
+      md5(_logged_in_users_key)
+    end
+
+    def server_state_for_account
+      md5([ _logged_in_users_key, @system_info.last_bot_run.id, @system_info.last_data_collector_run.id] * "::")
+    end
+
+    private
+
+    def _logged_in_users_key
+      [ (@controller.current_user && @controller.current_user.id),
+        ( @controller.current_admin && @controller.current_admin.id ) ] * "::"
+    end
+
+    def md5 *a
+      Digest::MD5.hexdigest(*a)
+    end
+  end
+
+  def cache_key
+    CacheKeys.new(self)
   end
 end

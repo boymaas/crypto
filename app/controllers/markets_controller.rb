@@ -10,7 +10,7 @@ class MarketsController < SecuredController
     @buy_orders = @orderbook.buy_orders_with_accumulated_total(:total, :quantity ).map {|h| OpenStruct.new(h)}
     @sell_orders = @orderbook.sell_orders_with_accumulated_total(:total, :quantity ).map {|h| OpenStruct.new(h)}
 
-    @account_trades = data_provider.account_trades_on_market @account, @market
+    @account_trades = data_provider.account_trades :account_id => @account.id, :market_id => @market.id
   end
 
   def data
