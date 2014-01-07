@@ -84,6 +84,7 @@ class ApplicationController < ActionController::Base
     def initialize controller
       @controller = controller
       @system_info = controller.system_info
+      @data_provider = controller.data_provider
     end
 
     def logged_in_users
@@ -91,7 +92,7 @@ class ApplicationController < ActionController::Base
     end
 
     def server_state_for_account
-      md5([ _logged_in_users_key, @system_info.last_bot_run.id, @system_info.last_data_collector_run.id] * "::")
+      md5([ _logged_in_users_key, @system_info.last_bot_run(@data_provider.current_crypto_trader_account).id, @system_info.last_data_collector_run.id] * "::")
     end
 
     private
