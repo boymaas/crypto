@@ -9,21 +9,26 @@ class BacktrackersController < ApplicationController
     # walk the hash
   end
 
+  class BacktrackJob 
+    @queue = :backtrack_job
+
+    def self.perform advisor_conf, currency_list
+      advisor_conf = Hash[
+        advisor_conf.map {|k,v| [k.to_sym,v.to_f]}
+      ]
+
+      advisor = CryptoTrader::Bot::Advisor::MacdSignalCross.new(advisor_conf)
+
+      runner = CryptoTrader::MarketBacktrackerRunner.new
+      runner.run advisor, :on => currency_list
+
+      # Now store results
+    end
+  end
+
   def update
-    @advisor_conf = Hash[
-    params[:advisor].map {|k,v| [k.to_sym,v.to_f]}
-    ]
-
-    
-    @advisor = CryptoTrader::Bot::Advisor::MacdSignalCross.new(@advisor_conf)
-
-    @markets = CryptoTrader::Model::Market.
-      where(:primary_currency_code => CryptoTrader::Cryptsy::QualitativeMarketAnalysis.a_list).
-      where(:secondary_currency_code => 'BTC')
-
-    @markets = @markets.take(1)
-    @results = @markets.map {|m| CryptoTrader::MarketBacktracker.new(m).backtrack(@advisor) }
-    @results = @results.sort_by {|r| r.resulting_budget }.reverse
-    
+    Resque.enqueue BacktrackJob, params[:advisor], CryptoTrader::Cryptsy::QualitativeMarketAnalysis.a_list
+    flash[:notice] = 'Backtrack job has started'
+    redirect_to :action => :show
   end
 end
