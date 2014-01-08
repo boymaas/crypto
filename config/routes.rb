@@ -25,6 +25,9 @@ Crypto::Application.routes.draw do
 
   resource :backtracker do
     resources :backtrack_runs do
+      collection do
+        get :export
+      end
       resources :backtrack_results
     end
   end

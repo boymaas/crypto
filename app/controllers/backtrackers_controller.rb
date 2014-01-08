@@ -3,11 +3,8 @@ class BacktrackersController < ApplicationController
     @advisor = CryptoTrader::Bot::Advisor::MacdSignalCross.new
     @advisor_conf = @advisor.conf_options
 
-    # we have advisor level
-    #  the signals
-    #
-    # walk the hash
   end
+
 
   class BacktrackJob 
     @queue = :backtrack_job
