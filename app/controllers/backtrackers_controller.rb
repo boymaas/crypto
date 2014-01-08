@@ -17,12 +17,11 @@ class BacktrackersController < ApplicationController
         advisor_conf.map {|k,v| [k.to_sym,v.to_f]}
       ]
 
-      advisor = CryptoTrader::Bot::Advisor::MacdSignalCross.new(advisor_conf)
+      # advisor = CryptoTrader::Bot::Advisor::MacdSignalCross.new(advisor_conf)
+      advisor = CryptoTrader::Bot::Advisor::MacdSignalCross.new
 
       runner = CryptoTrader::MarketBacktrackerRunner.new
       runner.run advisor, :on => currency_list
-
-      # Now store results
     end
   end
 

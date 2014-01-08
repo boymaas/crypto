@@ -27,6 +27,8 @@ service postgresql restart
 echo "End PostgreSQL"
 }
 
+# TODO: record settings below and turn ssl to false,
+#       otherwise problems with resque
 postgresql_shmmax() {
 # -- Dedicated server 8GB RAM
 # shared_buffers = 1/3 .. 1/4 dedicated RAM
