@@ -1,0 +1,21 @@
+%h3 Backtracking result
+
+%h4 Configuration
+
+%pre
+  = @backtrack_run.parameters.to_yaml
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th Market
+      %th.text-right Buy count
+      %th.text-right Sell count
+      %th.text-right  Resulting budget
+  %tbody
+  - @backtrack_results.each do |r|
+    %tr
+      %td= r.market.label
+      %td.text-right= r.buy_count
+      %td.text-right= r.sell_count
+      %td.text-right= bitcoin r.resulting_budget

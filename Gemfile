@@ -28,6 +28,8 @@ gem 'pg'
 gem 'kaminari'
 gem 'jquery-datatables-rails', git: 'git://github.com/rweng/jquery-datatables-rails.git'
 
+gem "resque", github: "resque/resque", :branch => '1-x-stable'
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
 

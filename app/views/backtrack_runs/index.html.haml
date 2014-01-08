@@ -1,0 +1,8 @@
+%h3 Backtrack runs
+
+%table.table.table-striped
+  - @backtrack_runs.each do |btr|
+    %tr
+      %td= btr.timestamp.utc
+      %td= btr.parameters
+      %td= link_to 'Show', backtracker_backtrack_run_backtrack_results_path(:backtrack_run_id => btr.id)
