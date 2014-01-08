@@ -37,6 +37,7 @@ set :foreman_app, :crypto
 set :foreman_user, :crypto
 set :foreman_concurrency, { 
   :web => 1,
+  :resque => 1,
 }
 
 # This task is the environment that is loaded for most commands, such as
