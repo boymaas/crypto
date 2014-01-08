@@ -24,7 +24,9 @@ Crypto::Application.routes.draw do
   end
 
   resource :backtracker do
-    
+    resources :backtrack_runs do
+      resources :backtrack_results
+    end
   end
 
   get 'partials/navbar_stats' => 'partials#navbar_stats'
