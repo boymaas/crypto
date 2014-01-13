@@ -3,7 +3,7 @@ class MarketsController < SecuredController
     @account = current_user.crypto_trader_account
     @desired_portfolio = CryptoTrader::Runner::DesiredPortfolio.new(@account)
 
-    @market = CryptoTrader::Model::Market.find(:id => params.fetch(:id))  
+    @market = CryptoTrader::Model::Market.find(:id => params.fetch(:id))
     @analyzed_market = CryptoTrader::AnalyzedMarket.new(@market)
     @market_state = @analyzed_market.market_state
     @orderbook = @analyzed_market.orderbook
@@ -15,9 +15,14 @@ class MarketsController < SecuredController
 
   def data
 
-    @market = CryptoTrader::Model::Market.find(:id => params.fetch(:id))  
+    @market = CryptoTrader::Model::Market.find(:id => params.fetch(:id))
 
     advisor = CryptoTrader::Bot::Advisor::MacdSignalCross.new
+
+    market_tuning_result = @market.tuning_results_dataset.order(:timestamp).last.result
+    advisor_normalizer = CryptoTrader::Tuning::AdvisorNormalizer.new
+
+    advisor = advisor_normalizer.apply market_tuning_result, advisor
 
     data = cache [:market_chart_data, system_info.last_data_collector_run.id, @market.id] do
       # NOTE: running advisor on all snapshots
@@ -35,7 +40,8 @@ class MarketsController < SecuredController
         snapshot = snapshots.at(timestamp)
         _, bidx = advisor.run_on(snapshot)
 
-        signals = advisor.signals.map do |name, signal|
+        signals = advisor.signals_conf.map do |name, signal|
+          puts signal.inspect
           [name.to_s.camelcase, signal.run_on(snapshot).to_f]
         end
 

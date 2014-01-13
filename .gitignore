@@ -19,3 +19,4 @@ dump.rdb
 crypto_production.dump.gz
 crypto_trader_production.dump.gz
 .sass-cache
+/TAGS
