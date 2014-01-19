@@ -1,6 +1,5 @@
 .row
-  - markets = CryptoTrader::Model::Market.where(:secondary_currency_code => 'BTC').order(:primary_currency_code).all
-  - markets.each_slice(markets.count / 3) do |mpart|
+  - markets.each_slice(1) do |mpart|
     .col-lg-4
       %ul.nav.nav-pills
         - mpart.each do |m|

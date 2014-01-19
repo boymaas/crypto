@@ -4,30 +4,30 @@
     %meta{:charset => "utf-8"}/
     %meta{:content => "IE=Edge,chrome=1", "http-equiv" => "X-UA-Compatible"}/
     %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
-    %title= content_for?(:title) ? yield(:title) : "Crypto" 
-    = csrf_meta_tags 
+    %title= content_for?(:title) ? yield(:title) : "Crypto"
+    = csrf_meta_tags
     / Le HTML5 shim, for IE6-8 support of HTML elements
     /[if lt IE 9]
       %script{:src => "//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.1/html5shiv.js", :type => "text/javascript"}
-    = stylesheet_link_tag "application", :media => "all" 
+    = stylesheet_link_tag "application", :media => "all"
     / For third-generation iPad with high-resolution Retina display:
     / Size should be 144 x 144 pixels
-    = favicon_link_tag 'apple-touch-icon-144x144-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '144x144' 
+    = favicon_link_tag 'apple-touch-icon-144x144-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '144x144'
     / For iPhone with high-resolution Retina display:
     / Size should be 114 x 114 pixels
-    = favicon_link_tag 'apple-touch-icon-114x114-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '114x114' 
+    = favicon_link_tag 'apple-touch-icon-114x114-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '114x114'
     / For first- and second-generation iPad:
     / Size should be 72 x 72 pixels
-    = favicon_link_tag 'apple-touch-icon-72x72-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '72x72' 
+    = favicon_link_tag 'apple-touch-icon-72x72-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '72x72'
     / For non-Retina iPhone, iPod Touch, and Android 2.1+ devices:
     / Size should be 57 x 57 pixels
-    = favicon_link_tag 'apple-touch-icon-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png' 
+    = favicon_link_tag 'apple-touch-icon-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png'
     / For all other devices
     / Size should be 32 x 32 pixels
-    = favicon_link_tag 'favicon.ico', :rel => 'shortcut icon' 
+    = favicon_link_tag 'favicon.ico', :rel => 'shortcut icon'
 
 
-    = javascript_include_tag "application" 
+    = javascript_include_tag "application"
     %script{:src => "http://code.highcharts.com/stock/highstock.js"}
     %script{:src => "http://code.highcharts.com/stock/modules/exporting.js"}
 
@@ -51,8 +51,8 @@
           .collapse.navbar-collapse.navbar-left
             %ul.nav.navbar-nav
               %li= link_to "Position", account_path
-              -# %li= link_to "Link2", "/path2"  
-              -# %li= link_to "Link3", "/path3"  
+              -# %li= link_to "Link2", "/path2"
+              -# %li= link_to "Link3", "/path3"
 
 
         - if user_signed_in?
@@ -81,23 +81,37 @@
           = render 'shared/navbar_stats'
         -# .collapse.navbar-collapse.navbar-right
         -#   %ul.nav.navbar-nav
-        -#     %li= link_to "Link1", "/path1"  
-        -#     %li= link_to "Link2", "/path2"  
-        -#     %li= link_to "Link3", "/path3"  
+        -#     %li= link_to "Link1", "/path1"
+        -#     %li= link_to "Link2", "/path2"
+        -#     %li= link_to "Link3", "/path3"
     .container
       .row
         .col-lg-9
-          = bootstrap_flash 
-          = yield 
+          = bootstrap_flash
+          = yield
         .col-lg-3
 
           %h4 Trending markets
           - cache [ :trending_markets_list, system_info.last_data_collector_run ] do
             = render :partial => 'shared/trending_market_list'
 
-          %h4 Btc markets
           - cache :shared_market_list, :expires_in => 1.hour do
-            = render :partial => 'shared/market_list'
+            - qanal = CryptoTrader::Cryptsy::QualitativeMarketAnalysis
+            - qanal_all = qanal.a_list + qanal.b_list + qanal.c_list
+
+            %h4 Btc A list
+            - markets = CryptoTrader::Model::Market.where(:secondary_currency_code => 'BTC').where(:primary_currency_code => qanal.a_list).order(:primary_currency_code).all
+            = render 'shared/market_list', :markets => markets
+            %h4 Btc B list
+            - markets = CryptoTrader::Model::Market.where(:secondary_currency_code => 'BTC').where(:primary_currency_code => qanal.b_list).order(:primary_currency_code).all
+            = render 'shared/market_list', :markets => markets
+            %h4 Btc C list
+            - markets = CryptoTrader::Model::Market.where(:secondary_currency_code => 'BTC').where(:primary_currency_code => qanal.c_list).order(:primary_currency_code).all
+            = render 'shared/market_list', :markets => markets
+
+            %h4 Btc risky markets
+            - markets = CryptoTrader::Model::Market.where(:secondary_currency_code => 'BTC').exclude(:primary_currency_code => qanal_all).order(:primary_currency_code).all
+            = render 'shared/market_list', :markets => markets
 
       -# NOTE: this must be here, otherwise ago doesn't take ..
       :coffee
