@@ -24,12 +24,13 @@ class MarketsController < SecuredController
 
     advisor = advisor_normalizer.apply market_tuning_result, advisor
 
+    last_trade_stats = @market.trade_stats_dataset.order(:rounded_date).last
 
     data = cache [:market_chart_data, system_info.last_data_collector_run.id, @market.id] do
       # NOTE: running advisor on all snapshots
+      # NOTE: todo base Time.now on last trade_stats element
       snapshots = CryptoTrader::Snapshots.new(@market) do |q|
-        # q.where('rounded_data > ?', Time.now - 2.weeks)
-        q.reverse.limit(1000).reverse
+        q.where('rounded_date > ?', last_trade_stats.rounded_date - 1.weeks)
       end
       snapshots = CryptoTrader::CachedSnapshots.new(snapshots)
 
