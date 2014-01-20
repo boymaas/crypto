@@ -27,7 +27,10 @@ class MarketsController < SecuredController
 
     data = cache [:market_chart_data, system_info.last_data_collector_run.id, @market.id] do
       # NOTE: running advisor on all snapshots
-      snapshots = CryptoTrader::Snapshots.new(@market)
+      snapshots = CryptoTrader::Snapshots.new(@market) do |q|
+        # q.where('rounded_data > ?', Time.now - 2.weeks)
+        q.reverse.limit(1000).reverse
+      end
       snapshots = CryptoTrader::CachedSnapshots.new(snapshots)
 
       data_points = snapshots.market_trade_stats
@@ -38,17 +41,14 @@ class MarketsController < SecuredController
       ema_long    = data_points_price_avg.indicator(:ema, advisor.conf[:long])
       data_points = data_points.zip(ema_short.zip(ema_long)).flatten.each_slice(4).to_a
 
-      period = 14*24*4
-      to_drop = data_points.count - period
-      to_drop = 0 if to_drop < 0
-      data_points = data_points.drop(to_drop)
+      # now filter out the nils
+      data_points = data_points.reject {|dp| dp[3].nil? }
 
       data = data_points.map do |timestamp, mts, emas, emal|
         snapshot = snapshots.at(timestamp)
         _, bidx = advisor.run_on(snapshot)
 
         signals = advisor.signals_conf.map do |name, signal|
-          puts signal.inspect
           [name.to_s.camelcase, signal.run_on(snapshot).to_f]
         end
 
