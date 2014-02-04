@@ -17,7 +17,7 @@ class MarketsController < SecuredController
 
     @market = CryptoTrader::Model::Market.find(:id => params.fetch(:id))
 
-    advisor = CryptoTrader::Bot::Advisor::MacdSignalCross.new
+    advisor = CryptoTrader::Bot::Advisor::EmaReversedCrossover.new
 
     market_tuning_result = @market.tuning_results_dataset.order(:timestamp).last.result
     advisor_normalizer = CryptoTrader::Tuning::AdvisorNormalizer.new
