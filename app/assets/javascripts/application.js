@@ -15,12 +15,14 @@
 //= require jquery.timeago
 //= require jquery.cookie
 //= require twitter/bootstrap
+//= require underscore
 //= require turbolinks
 //= require bootstrap
 //= require bootstrap-slider
 //= require timeago
 //= require datatables
 //= require auto-refresh-partial
+//= require graph
 //
 //@ require_tree .
 

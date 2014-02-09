@@ -4,4 +4,4 @@
       %ul.nav.nav-pills
         - mpart.each do |m|
           %li
-            = link_to m.label, market_path(m.id)
+            = link_to_if defined?(show_links), m.label, market_path(m.id)
